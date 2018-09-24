@@ -1,0 +1,2 @@
+default via 172.16.40.1 table policy-eth1
+
