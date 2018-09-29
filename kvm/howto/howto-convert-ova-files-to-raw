@@ -1,0 +1,127 @@
+root@Inspiron:~/tmp/180929# file metasploitable.ova
+metasploitable.ova: POSIX tar archive (GNU)
+
+root@Inspiron:~/tmp/180929# tar tvf metasploitable.ova
+-rw------- someone/someone 10082 2017-07-20 17:19 Metasploitable_[20170720].ovf
+-rw------- someone/someone 891387392 2017-07-20 17:20 Metasploitable_[20170720]-disk001.vmdk
+
+root@Inspiron:~/tmp/180929# mkdir metasploitable
+
+root@Inspiron:~/tmp/180929# tar xvf metasploitable.ova -C metasploitable/
+Metasploitable_[20170720].ovf
+Metasploitable_[20170720]-disk001.vmdk
+
+root@Inspiron:~/tmp/180929# cd metasploitable/
+
+root@Inspiron:~/tmp/180929/metasploitable# file *
+Metasploitable_[20170720]-disk001.vmdk: VMware4 disk image
+Metasploitable_[20170720].ovf:          XML 1.0 document, ASCII text, with very long lines
+
+root@Inspiron:~/tmp/180929/metasploitable# qemu-img convert -O raw Metasploitable_\[20170720\]-disk001.vmdk metasploitable.raw
+
+root@Inspiron:~/tmp/180929/metasploitable# file metasploitable.raw 
+metasploitable.raw: DOS/MBR boot sector; GRand Unified Bootloader, stage1 version 0x3, stage2 address 0x2000, stage2 segment 0x200, extended partition table
+
+root@Inspiron:~/tmp/180929/metasploitable# mv metasploitable.raw /var/lib/libvirt/images
+
+root@Inspiron:~/tmp/180929/metasploitable# more Metasploitable_\[20170720\].ovf 
+...
+        <Memory RAMSize="512"/>
+...
+      <Item>
+        <rasd:Address>0</rasd:Address>
+        <rasd:Caption>scsiController0</rasd:Caption>
+        <rasd:Description>SCSI Controller</rasd:Description>
+        <rasd:ElementName>scsiController0</rasd:ElementName>
+        <rasd:InstanceID>5</rasd:InstanceID>
+        <rasd:ResourceSubType>lsilogic</rasd:ResourceSubType>
+        <rasd:ResourceType>6</rasd:ResourceType>
+      </Item>
+...
+      <Item>
+        <rasd:AddressOnParent>0</rasd:AddressOnParent>
+        <rasd:Caption>disk1</rasd:Caption>
+        <rasd:Description>Disk Image</rasd:Description>
+        <rasd:ElementName>disk1</rasd:ElementName>
+        <rasd:HostResource>/disk/vmdisk1</rasd:HostResource>
+        <rasd:InstanceID>8</rasd:InstanceID>
+        <rasd:Parent>5</rasd:Parent>
+        <rasd:ResourceType>17</rasd:ResourceType>
+      </Item>
+...
+        <Network>
+          <Adapter slot="0" enabled="true" MACAddress="080027AB8407" promiscuousModePolicy="AllowNetwork" type="Am79C970A">
+            <DisabledModes>
+              <NATNetwork name="NatNetwork"/>
+            </DisabledModes>
+            <InternalNetwork name="dmz"/>
+          </Adapter>
+          <Adapter slot="1" enabled="true" MACAddress="080027DE6EB0" type="Am79C970A">
+            <DisabledModes>
+              <HostOnlyInterface name="VirtualBox Host-Only Ethernet Adapter"/>
+              <NATNetwork name="NatNetwork"/>
+            </DisabledModes>
+            <InternalNetwork name="intnet"/>
+          </Adapter>
+...
+
+root@Inspiron:~/tmp/180929/metasploitable# virsh net-list
+ Name                 State      Autostart     Persistent
+----------------------------------------------------------
+ default              active     yes           yes
+
+root@Inspiron:~# virsh net-dumpxml default
+<network>
+  <name>default</name>
+  <uuid>9cb88b13-90b0-4754-bf9b-09026f153150</uuid>
+  <forward mode='nat'>
+    <nat>
+      <port start='1024' end='65535'/>
+    </nat>
+  </forward>
+  <bridge name='virbr0' stp='on' delay='0'/>
+  <mac address='52:54:00:75:e3:b6'/>
+  <ip address='192.168.122.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.122.2' end='192.168.122.254'/>
+    </dhcp>
+  </ip>
+</network>
+
+root@Inspiron:~/tmp/180929/metasploitable# vi dmz.xml 
+
+<network>
+  <name>dmz</name>
+  <bridge name='br_dmz' stp='on' delay='0'/>
+  <mac address='52:54:00:00:00:11'/>
+</network>
+
+root@Inspiron:~/tmp/180929/metasploitable# virsh net-define dmz.xml 
+Network dmz defined from dmz.xml
+
+root@Inspiron:~/tmp/180929/metasploitable# virsh net-autostart dmz
+Network dmz marked as autostarted
+
+root@Inspiron:~/tmp/180929/metasploitable# virsh net-start dmz
+Network dmz started
+
+root@Inspiron:~/tmp/180929/metasploitable# virsh net-list 
+ Name                 State      Autostart     Persistent
+----------------------------------------------------------
+ default              active     yes           yes
+ dmz                  active     yes           yes
+
+root@Inspiron:~/tmp/180929/metasploitable# apt install libosinfo-bin
+
+root@Inspiron:~/tmp/180929/metasploitable# osinfo-query os
+...
+ubuntu8.04
+...
+
+root@Inspiron:~# virt-install -n metasploitable \
+	--memory 512 \
+	--import \
+	--os-variant ubuntu8.04 \
+	--disk path=/var/lib/libvirt/images/metasploitable.raw,bus=scsi,format=raw \
+	--network network=default,model=e1000 \
+	--network network=dmz,model=e1000
