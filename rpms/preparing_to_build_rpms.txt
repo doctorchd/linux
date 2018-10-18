@@ -1,0 +1,46 @@
+1 Install rpm-build package
+Example:
+
+yum install rpm-build subversion
+rpm -q rpm-build
+Note: on 64-bit systems you may need to install subversion.x86_64
+
+2 File ~/.rpmmacros
+Create file .rpmmacros in your home directory.
+
+Mandatory definitions: %_topdir, %packager.
+
+Example:
+
+%_topdir        /home/chd/work/devel/rpms
+%packager       Dmitry Cherkasov <chd@example.com>
+3 Create directories for building
+Create directories:
+
+%_topdir/SOURCES
+%_topdir/SPECS
+%_topdir/BUILD
+%_topdir/RPMS
+%_topdir/RPMS/i386
+%_topdir/RPMS/x86_64
+%_topdir/RPMS/noarch
+%_topdir/SRPMS
+%_topdir/ARC
+Use the following script:
+
+#!/bin/sh
+TOPDIR=`sed -n "/%_topdir/,0 {s/%_topdir[\t ]*//;p;}" ~/.rpmmacros | head -n
+1`
+mkdir -vp ${TOPDIR}/SOURCES ${TOPDIR}/SPECS ${TOPDIR}/BUILD
+${TOPDIR}/RPMS/i386 ${TOPDIR}/RPMS/x86_64 ${TOPDIR}/RPMS/noarch
+${TOPDIR}/SRPMS ${TOPDIR}/ARC
+4 Get needed sources for particular project from SVN repository
+Example:
+
+cd ~/work/devel/rpms/SOURCES
+svn checkout http://svn.sumix/repos/<project-name>
+For PLINK-RPMS
+
+cd ~/work/devel/rpms/SOURCES
+svn checkout http://svn.crp/repos/foo-rpms/trunk/PLINK .
+

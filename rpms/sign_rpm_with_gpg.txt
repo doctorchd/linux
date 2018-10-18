@@ -1,0 +1,175 @@
+1 Install gnupg2
+sudo yum install gnupg2
+cd
+mkdir -p .gnupg
+2 Generate GPG key if there is no one
+gpg --gen-key
+RHEL5
+CENTOS5VM ~ gpg --gen-key
+gpg (GnuPG) 2.0.10; Copyright (C) 2009 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Please select what kind of key you want:
+   (1) DSA and Elgamal (default)
+   (2) DSA (sign only)
+   (5) RSA (sign only)
+Your selection?
+DSA keypair will have 1024 bits.
+ELG keys may be between 1024 and 4096 bits long.
+What keysize do you want? (2048)
+Requested keysize is 2048 bits
+Please specify how long the key should be valid.
+         0 = key does not expire
+      <n>  = key expires in n days
+      <n>w = key expires in n weeks
+      <n>m = key expires in n months
+      <n>y = key expires in n years
+Key is valid for? (0)
+Key does not expire at all
+Is this correct? (y/N) y
+
+GnuPG needs to construct a user ID to identify your key.
+
+Real name: Example Communications
+Email address: admin@example.com
+Comment:
+You selected this USER-ID:
+    "Example Communications <admin@example.com>"
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit?
+Passphrase:
+
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+gpg: /home/chd/.gnupg/trustdb.gpg: trustdb created
+gpg: key 57DFBC59 marked as ultimately trusted
+public and secret key created and signed.
+
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+pub   1024D/57DFBC59 2013-05-23
+      Key fingerprint = 1179 E863 C4D5 0252 6906  6264 8EA8 198E 57DF BC59
+uid                  Example Communications <admin@example.com>
+sub   2048g/1E6DD967 2013-05-23
+
+RHEL6
+Please select what kind of key you want:
+   (1) RSA and RSA (default)
+   (2) DSA and Elgamal
+   (3) DSA (sign only)
+   (4) RSA (sign only)
+Your selection?
+RSA keys may be between 1024 and 4096 bits long.
+What keysize do you want? (2048)
+Requested keysize is 2048 bits
+Please specify how long the key should be valid.
+         0 = key does not expire
+      <n>  = key expires in n days
+      <n>w = key expires in n weeks
+      <n>m = key expires in n months
+      <n>y = key expires in n years
+Key is valid for? (0)
+Key does not expire at all
+Is this correct? (y/N) y
+
+GnuPG needs to construct a user ID to identify your key.
+
+Real name: Example Communications
+Email address: admin@example.com
+Comment:
+You selected this USER-ID:
+    "Example Communications <admin@example.com>"
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? o
+You need a Passphrase to protect your secret key.
+
+can't connect to `/home/chd/.gnupg/S.gpg-agent': Connection refused
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+gpg: key EDF50594 marked as ultimately trusted
+public and secret key created and signed.
+
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+pub   2048R/EDF50594 2013-04-12
+      Key fingerprint = B931 7237 0BEC 2A26 D05D  5236 F9F5 1915 EDF5 0594
+uid                  Example Communications <admin@example.com>
+sub   2048R/5582AAB7 2013-04-12
+gpg --list-keys
+/home/chd/.gnupg/pubring.gpg
+----------------------------
+pub   2048R/EDF50594 2013-04-12
+uid                  Example Communications <admin@example.com>
+sub   2048R/5582AAB7 2013-04-12
+3 Export public key from key ring to a text file
+gpg --export -a 'Example Communications' > RPM-GPG-KEY-foolink-admin
+4 Export private key to a file
+gpg --export-secret-key -a 'Example Communications' >
+FOOLINK-RPM-GPG-KEY-RHEL5.private
+5 If the key exists, download it
+wget http://updates.crp/FOOLINK/RPM-GPG-KEY-foolink-admin
+6 Import public key to RPM DB
+sudo rpm --import RPM-GPG-KEY-foolink-admin
+rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'
+gpg-pubkey-c105b9de-4e0fd3a3 --> gpg(CentOS-6 Key (CentOS 6 Official Signing
+Key) <centos-6-key@centos.org>)
+gpg-pubkey-00f97f56-467e318a --> gpg(Remi Collet <RPMS@FamilleCollet.com>)
+gpg-pubkey-6b8d79e6-3f49313d --> gpg(Dag Wieers (Dag Apt Repository v1.0)
+<dag@wieers.com>)
+gpg-pubkey-23b66a9d-3adb5504 --> gpg(Dell Computer Corporation (Linux Systems
+Group) <linux-security@dell.com>)
+gpg-pubkey-edf50594-5167de5a --> gpg(Example Communications
+<admin@example.com>)
+7 Update .rpmmacros
+echo "%_signature gpg" >> .rpmmacros
+echo "%_gpg_name  Example Communications" >> .rpmmacros
+8 Import private key
+Download Private.rar
+
+rar e private.rar
+gpg --allow-secret-key-import --import ./private.key 
+$ gpg --allow-secret-key-import --import ./private.key 
+gpg: keyring `/home/.gnupg/secring.gpg' created
+gpg: keyring `/home/.gnupg/pubring.gpg' created
+gpg: key EDF50594: secret key imported
+gpg: /home/.gnupg/trustdb.gpg: trustdb created
+gpg: key EDF50594: public key "Example Communications
+<admin@example.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+gpg:       secret keys read: 1
+gpg:   secret keys imported: 1
+
+9 Build, sign and submit RPM
+cd SHARED/foolink-repo
+make
+...
+Wrote:
+/home/chd/Work/Devel/RPMs/RPMS/FOOLINK/SHARED/tools/noarch/foolink-repo-1.0-42.noarch.rpm
+...
+rpm --addsign
+/home/chd/Work/Devel/RPMs/RPMS/FOOLINK/SHARED/tools/noarch/foolink-repo-1.0-42.noarch.rpm
+Enter pass phrase:
+Pass phrase is good.
+/home/chd/Work/Devel/RPMs/RPMS/FOOLINK/SHARED/tools/noarch/foolink-repo-1.0-42.noarch.rpm
+or
+
+make sign
+make repo SVN_MSG='gpg signed'
+10 Related
+http://irtfweb.ifa.hawaii.edu/~lockhart/gpg/

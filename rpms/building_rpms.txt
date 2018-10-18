@@ -1,0 +1,158 @@
+1 Getting help
+To get help on available options execute make help.
+
+
+2 Working with a single RPM
+2.1 Getting help
+To get help run make help in the source directory of RPM.
+
+2.2 Default building
+Go to the source directory of this RPM and execute make rpm:
+
+cd ~/RPM/SOURCES/foo-rpms/trunk/RPMS/foo-server-templates
+make rpm
+Your new RPM is located in ~/RPM/RPMS/<arch>. It is also added to archive
+directory ~/RPM/ARC.
+
+During successful execution of make .spec file is updated: Release field is
+incremented. Previous version of .spec file is saved with suffix .bak. In case
+make failed the contents of .spec file is restored.
+
+When RPM is created all older releases of this RPM are removed from the
+directory ~/RPM/RPMS/<arch>. Yet this RPM still remains in ~/RPM/ARC.
+
+2.3 If you do not want to increment Release
+If you do not want to increment Release each time you make RPM, edit Makefile
+in the source directory of this RPM: uncomment or add at the beginning of the
+file the string like:
+
+DONT_UPDATE_RELEASE = 1
+Another possibility is to run make rpm with parameter 'DONT_UPDATE_RELEASE=1'
+
+make rpm DONT_UPDATE_RELEASE=1
+2.4 If you want to keep old versions of RPM in archive
+Whether to copy built RPM into archive (%_topdir/ARC) or not is decided upon
+the value of DONT_ARCHIVE variable. Edit common.mk and Makefile files to set
+it as you need.
+
+Alternatively you can specify the value of DONT_ARCHIVE in the command line:
+
+make rpm DONT_ARCHIVE=0
+2.5 If you want to set Revision or Release manually
+If you want to set Revision or Release manually just edit the .spec file
+accordingly and run make rpm.
+
+2.6 How to force building RPM
+By default RPM is not built if any of its components did not change. When
+trying to build you see something like this:
+
+foo-server-dps-config $ make
+make: Nothing to be done for `rpm'.
+Yet if you want to force rebuilding of RPM just delete empty file .build in
+the directory of this RPM and run make. File .build is created every time that
+RPM is successfully built and is used to store the time of this build. If no
+components of RPM are newer then .build make is refusing to build RPM.
+
+2.7 Updating SVN repository
+In the directory of RPM sources (like
+%_topdir/SOURCES/RPMS/foo-rpms/foo-server-templates) execute make commit:
+
+$ make commit
+svn commit
+2.8 Submitting RPM to repository
+In the directory of RPM sources (like
+%_topdir/SOURCES/RPMS/foo-rpms/foo-server-templates) execute make repo:
+
+$ make repo
+svn commit
+cat `sed -n "/%_topdir/,0 {s/%_topdir[\t ]*//;p;}" ~/.rpmmacros | head -n
+1`/RPMS/noarch/foo-server-templates-`sed -n "/^Version: / {s/^Version:
+//;p;}" foo-server-templates.spec`-`sed -n "/^Release: / {s/^Release: //;p;}"
+//foo-server-templates.spec`.noarch.rpm | ssh -p 4322 repo "cat >
+///var/www/sites/repo/foorepo-shared/foo-server-templates-`sed -n
+//"/^Version: / {s/^Version: //;p;}" foo-server-templates.spec`-`sed -n
+//"/^Release: / {s/^Release: //;p;}" foo-server-templates.spec`.noarch.rpm;
+//createrepo /var/www/sites/repo/foorepo-shared"
+chd@repo's password:
+1/1 - foo-server-templates-5.2-16.noarch.rpm
+Saving Primary metadata
+Saving file lists metadata
+Saving other metadata
+Submitted RPMs are available via URL: http://repo
+
+Notes:
+
+1. You can use a single command make repo to build RPM and submit it to
+repository.
+
+2. When you run make repo commit to SVN repository is also performed (actually
+you perform make commit repo).
+
+2.9 Cleaning build results
+To remove built RPM from %_topdir/RPMS directory and .build file from RPM
+source directory run make clean in the source directory of RPM.
+
+Use make clean if you want to rebuild this RPM. You can also use make clean
+rpm or make clean repo.
+
+3 Working with several or all the RPMs
+3.1 Getting help
+To get help run make help in the directory containing all of the RPMs
+directories.
+
+3.2 Building
+To rebuild all of the RPMs run make in the directory containing all of the
+RPMs directories. You can rebuild only one or several RPMs if you specify
+their names as parameters to make:
+
+make foo-server-templates
+3.3 Commit to SVN
+To commit to SVN all changes to RPMs run make commit
+
+3.4 Submitting RPMs to repository
+To submit all built RPMs (those that are present in the %_topdir/RPMS
+directory) to repository run make repo.
+
+Notes:
+
+1. Running make repo implies building all RPMs and committing changes to SVN.
+
+2. During submitting RPMs to repository directory GPG is also copied.
+
+3.5 Cleaning built RPMS
+To remove all built RPMs from %_topdir/RPMS directory and .build files from
+the directories of all RPMs run make clean. Use make clean if you want to
+rebuild all the RPMs.
+
+You can also use make clean repo to rebuild all RPMs and submit them to
+repository.
+
+3.6 Rsyncing repo to updates2 and further to
+updates3
+at DOG run /etc/scripts/rsync-repoTOupdates2.sh to sync external updates2 repo
+at DOG with local repository at DOG
+
+then run /etc/scripts/rsync-updates2TOupdates3.sh to sync external updates3
+repo at BOCK with external repo updates2 at DOG
+
+4 Adding new RPM
+Add source directory of RPM
+Edit .spec file: remove Packager: line and change BuildRoot: to
+%_topdir/SOURCES/foo-rpms/trunk/RPMS-RHEL5/%{name}/rpm-data
+Compose Makefile for this RPM like:
+RPMNAME = foo-server-changelog
+ARCH = noarch
+#DONT_UPDATE_RELEASE = 1
+#DONT_ARCHIVE = 0
+
+DEPENDENCIES =  rpm-data/home/foo/scripts/* \
+                rpm-data/var/www/html/*
+
+include ../common.mk
+
+#REPONAME = foorepo-rhel5
+Add Makefile to svn
+svn add Makefile
+Edit Makefile in the directory containing all RPMs source directories: add new
+RPM name to SUBDIRS variable.
+
