@@ -1,0 +1,24 @@
+#!/bin/sh
+
+OPTION=""
+OPTIND=""
+OPTARG=""
+FORCE=0
+
+while getopts c:fv OPTION; do
+
+        echo "OPTION = $OPTION"
+        echo "OPTIND = $OPTIND"
+        echo "OPTARG = $OPTARG"
+
+        case $OPTION in
+                c ) CONFIG=$OPTARG ;;
+                f ) FORCE=1        ;;
+                v ) VERBOSE=1      ;;
+        esac
+done
+
+echo "CONFIG  = $CONFIG"
+echo "FORCE   = $FORCE"
+echo "VERBOSE = $VERBOSE"
+
