@@ -1,0 +1,50 @@
+1 Mount standard CentOS image
+sudo mount -o loop ~/images/CentOS-7.0-1406-x86_64-Minimal.iso /mnt
+2 Prepare workplace
+cd work
+mkdir PLINK-7.1
+cd PLINK-7.1
+mkdir iso
+3 Copy files from standard image
+cp -vr /mnt/isolinux/* iso
+cp -v  /mnt/.discinfo  iso
+cp -vr /mnt/images     iso
+cp -vr /mnt/LiveOS     iso
+cp -vr /mnt/EFI        iso
+cp -vr /mnt/Packages   iso
+4 Prepare kickstart script
+mkdir iso/ks
+sudo cat /root/anaconda-ks.cfg > iso/ks/ks.cfg
+vi iso/ks/ks.cfg
+--- anaconda-ks.cfg     2015-06-03 22:01:54.275682720 +0300
++++ iso/ks/ks.cfg       2015-06-03 21:58:20.926050607 +0300
+@@ -14,7 +14,7 @@
+
+ # Network information
+ network  --bootproto=dhcp --device=enp0s3 --ipv6=auto --activate
+-network  --hostname=localhost.localdomain
++network  --device=lo --hostname=localhost.localdomain
+ # Root password
+ rootpw --iscrypted
+$6$NhpvEoCRjr.X184r$k6gBArhNXsloQKzZzW1SS9UhXfI3JojYWyDCtRH7/mQSrMXtKDtHKku2dVAJZyInhOTPAOgcLc7nNovfNFiEP1
+ # System timezone
+@@ -25,7 +25,7 @@
+ # System bootloader configuration
+ bootloader --location=mbr --boot-drive=sda
+ # Partition clearing information
+-clearpart --none --initlabel
++clearpart --drives=sda --all --initlabel
+ # Disk partitioning information
+ part /boot --fstype="xfs" --ondisk=sda --size=500
+ part pv.20 --fstype="lvmpv" --ondisk=sda --size=101698
+5 Create repodata
+mkdir iso/repodata
+cp -v /mnt/repodata/*comps.xml.gz iso/repodata/comps.xml.gz
+gzip -d iso/repodata/comps.xml.gz
+createrepo -g `pwd`/iso/repodata/comps.xml iso
+6 Build ISO image
+genisoimage -d -o custom.iso -b isolinux.bin -c boot.cat -no-emul-boot -V
+'CentOS 7 x86_64' -boot-load-size 4 -boot-info-table -R -J -v -T iso
+implantisomd5 custom.iso
+7 Source
+http://smorgasbork.com/2014/07/16/building-a-custom-centos-7-kickstart-disc-part-1/
