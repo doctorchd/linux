@@ -1,0 +1,73 @@
+root@avise2:~/work# uname -r
+4.4.0-141-generic
+
+root@avise2:~/work# dpkg -l | grep 4.4.0-141
+ii  linux-headers-4.4.0-141             4.4.0-141.167
+all          Header files related to Linux kernel version 4.4.0
+ii  linux-headers-4.4.0-141-generic     4.4.0-141.167
+amd64        Linux kernel headers for version 4.4.0 on 64 bit
+x86 SMP
+ii  linux-image-4.4.0-141-generic       4.4.0-141.167
+amd64        Linux kernel image for version 4.4.0 on 64 bit x86
+SMP
+ii  linux-image-extra-4.4.0-141-generic 4.4.0-141.167
+amd64        Linux kernel extra modules for version 4.4.0 on 64
+bit x86 SMP
+ii  linux-libc-dev:amd64                4.4.0-141.167
+amd64        Linux Kernel Headers for development
+
+root@avise2:~/work# wget http://security.ubuntu.com/ubuntu/pool/main/l/linux/linux-headers-4.4.0-116-generic_4.4.0-116.140_amd64.deb
+root@avise2:~/work# wget http://security.ubuntu.com/ubuntu/pool/main/l/linux/linux-headers-4.4.0-116_4.4.0-116.140_all.deb
+root@avise2:~/work# wget http://security.ubuntu.com/ubuntu/pool/main/l/linux/linux-image-4.4.0-116-generic_4.4.0-116.140_amd64.deb
+root@avise2:~/work# wget http://security.ubuntu.com/ubuntu/pool/main/l/linux/linux-image-extra-4.4.0-116-generic_4.4.0-116.140_amd64.deb
+
+root@avise2:~/work# apt install module-init-tools
+
+root@avise2:~/work# mkdir 4.4.0-116
+root@avise2:~/work# mv -v *-4.4.0-116* 4.4.0-116/
+
+root@avise2:~/work# cd 4.4.0-116/
+
+root@avise2:~/work/4.4.0-116# ll
+total 67496
+drwxr-xr-x 2 root root     4096 Jan 14 02:19 ./
+drwxr-xr-x 6 root root     4096 Jan 14 02:19 ../
+-rw-r--r-- 1 root root  9922244 Feb 13  2018 linux-headers-4.4.0-116_4.4.0-116.140_all.deb
+-rw-r--r-- 1 root root   774204 Feb 13  2018 linux-headers-4.4.0-116-generic_4.4.0-116.140_amd64.deb
+-rw-r--r-- 1 root root 22027102 Feb 13  2018 linux-image-4.4.0-116-generic_4.4.0-116.140_amd64.deb
+-rw-r--r-- 1 root root 36373020 Feb 13  2018 linux-image-extra-4.4.0-116-generic_4.4.0-116.140_amd64.deb
+
+root@avise2:~/work/4.4.0-116# dpkg -i *.deb
+
+root@avise2:~/work/4.4.0-116# dpkg -l | grep linux-headers
+ii  linux-headers-4.4.0-116             4.4.0-116.140
+all          Header files related to Linux kernel version 4.4.0
+ii  linux-headers-4.4.0-116-generic     4.4.0-116.140
+amd64        Linux kernel headers for version 4.4.0 on 64 bit x86 SMP
+ii  linux-headers-4.4.0-141             4.4.0-141.167
+all          Header files related to Linux kernel version 4.4.0
+ii  linux-headers-4.4.0-141-generic     4.4.0-141.167
+amd64        Linux kernel headers for version 4.4.0 on 64 bit x86 SMP
+ii  linux-headers-generic               4.4.0.141.147
+amd64        Generic Linux kernel headers
+
+root@avise2:~/work/4.4.0-116# dpkg -l | grep linux-image
+ii  linux-image-4.4.0-116-generic       4.4.0-116.140
+amd64        Linux kernel image for version 4.4.0 on 64 bit x86 SMP
+ii  linux-image-4.4.0-141-generic       4.4.0-141.167
+amd64        Linux kernel image for version 4.4.0 on 64 bit x86 SMP
+ii  linux-image-extra-4.4.0-116-generic 4.4.0-116.140
+amd64        Linux kernel extra modules for version 4.4.0 on 64 bit x86 SMP
+ii  linux-image-extra-4.4.0-141-generic 4.4.0-141.167
+amd64        Linux kernel extra modules for version 4.4.0 on 64 bit x86 SMP
+ii  linux-image-generic                 4.4.0.141.147
+amd64        Generic Linux kernel image
+
+root@avise2:~/work/4.4.0-116# reboot
+
+[ hold pressed escape ]
+
+In GRUB menu choose “Advanced options for Ubuntu”
+
+Choose needed kernel
+
