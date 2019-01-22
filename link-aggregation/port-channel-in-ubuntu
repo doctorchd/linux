@@ -1,0 +1,159 @@
+https://www.tecmint.com/configure-network-bonding-teaming-in-ubuntu/
+
+# Check interfaces
+
+testuser@avise1:~$ ip -o l
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state
+UNKNOWN mode DEFAULT group default qlen 1\    link/loopback
+00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: ens2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc
+pfifo_fast state UP mode DEFAULT group default qlen 1000\
+link/ether 52:54:00:e0:3c:50 brd ff:ff:ff:ff:ff:ff
+3: ens6: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc
+pfifo_fast state UP mode DEFAULT group default qlen 1000\
+link/ether 52:54:00:e0:3c:51 brd ff:ff:ff:ff:ff:ff
+4: ens7: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc
+pfifo_fast state UP mode DEFAULT group default qlen 1000\
+link/ether 52:54:00:e0:3c:52 brd ff:ff:ff:ff:ff:ff
+5: ens8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc
+pfifo_fast state UP mode DEFAULT group default qlen 1000\
+link/ether 52:54:00:e0:3c:53 brd ff:ff:ff:ff:ff:ff
+6: ens9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc
+pfifo_fast state UP mode DEFAULT group default qlen 1000\
+link/ether 52:54:00:e0:3c:54 brd ff:ff:ff:ff:ff:ff
+7: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc
+noqueue state DOWN mode DEFAULT group default \    link/ether
+02:42:64:8d:24:0c brd ff:ff:ff:ff:ff:ff
+
+# Check that bond kernel module is loaded and load it if needed
+
+# Check kernel module
+
+root@avise1:~# lsmod | grep bond
+root@avise1:~# modprobe bonding
+root@avise1:~# lsmod | grep bond
+bonding               147456  0
+
+# Check that new interface bond0 appeared
+
+root@avise1:~# ip addr show bond0
+
+22: bond0: <BROADCAST,MULTICAST,MASTER> mtu 1500 qdisc noop
+state DOWN group default qlen 1000
+    link/ether b6:40:65:8f:49:90 brd ff:ff:ff:ff:ff:ff
+
+# Add interfaces to bonding group
+# Make sure interfaces are inactive
+root@avise1:~# ip link set ens8 down
+root@avise1:~# ip link set ens9 down
+
+# Add interfaces to bonding group
+root@avise1:~# ip link set ens8 master bond0
+root@avise1:~# ip link set ens9 master bond0
+
+# Interfaces come up
+root@avise1:~# ip addr show ens8
+5: ens8: <BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP> mtu 1500 qdisc
+pfifo_fast master bond0 state UP group default qlen 1000
+    link/ether 52:54:00:e0:3c:53 brd ff:ff:ff:ff:ff:ff
+
+root@avise1:~# ip addr show ens9
+6: ens9: <BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP> mtu 1500 qdisc
+pfifo_fast master bond0 state UP group default qlen 1000
+    link/ether 52:54:00:e0:3c:53 brd ff:ff:ff:ff:ff:ff
+
+# Bring up interface bond0
+root@avise1:~# ip link set bond0 up
+
+root@avise1:~# ip addr show bond0
+22: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500
+qdisc noqueue state UP group default qlen 1000
+    link/ether 52:54:00:e0:3c:53 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::5054:ff:fee0:3c53/64 scope link
+       valid_lft forever preferred_lft forever
+
+# Update interface configuration files
+root@avise2:~# apt install ifenslave
+root@avise2:~# cd /etc/network/
+root@avise2:/etc/network# vi interfaces
+
+# This file describes the network interfaces available on your
+# system
+# and how to activate them. For more information, see
+# interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto ens2
+iface ens2 inet dhcp
+
+# Port channel
+auto ens8
+iface ens8 inet manual
+    bond-master bond0
+
+auto ens9
+iface ens9 inet manual
+    bond-master bond0
+
+auto bond0
+iface bond0 inet manual
+    #xmit_hash_policy layer2+3
+    bond-mode 0
+    bond-miimon 100
+    bond-slaves none
+
+root@avise2:~# cd /etc/modprobe.d/
+root@avise2:/etc/modprobe.d# vi bonding.conf
+
+alias bond0 bonding
+options bonding mode=0 miimon=100
+#options bonding mode=2 lacp_rate=1 xmit_hash_policy=2
+miimon=100
+
+root@avise2:~# reboot
+Check bonding
+root@avise1:/etc/network# cat /proc/net/bonding/bond0
+Ethernet Channel Bonding Driver: v3.7.1 (April 27, 2011)
+
+Bonding Mode: load balancing (round-robin)
+MII Status: up
+MII Polling Interval (ms): 0
+Up Delay (ms): 0
+Down Delay (ms): 0
+
+Slave Interface: ens8
+MII Status: up
+Speed: Unknown
+Duplex: Unknown
+Link Failure Count: 0
+Permanent HW addr: 52:54:00:e0:3c:53
+Slave queue ID: 0
+
+Slave Interface: ens9
+MII Status: up
+Speed: Unknown
+Duplex: Unknown
+Link Failure Count: 0
+Permanent HW addr: 52:54:00:e0:3c:54
+Slave queue ID: 0
+Bonding modes
+The types of Network Bonding are listed below.
+mode=0 (balance-rr)
+mode=1 (active-backup)
+mode=2 (balance-xor)
+mode=3 (broadcast)
+mode=4 (802.3ad)
+mode=5 (balance-tlb)
+mode=6 (balance-alb)
+The full documentations regarding NIC bonding can be found at
+Linux kernel doc pages.
+https://www.kernel.org/doc/Documentation/networking/bonding.txt
+
+
