@@ -16,6 +16,9 @@ service tftp
 
 mkdir /var/lib/tftp
 ln -s /var/lib/tftp /tftpboot
+chown -R nobody: /var/lib/tftp
+chmod 777 /var/lib/tftp
+
 systemctl reload xinetd
 
 root@avic2:/etc/xinetd.d# netstat -lpen | grep 69
