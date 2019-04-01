@@ -1,0 +1,22 @@
+apt install tftp tftpd
+
+vi tftp
+
+service tftp
+{
+        protocol        = udp
+        port            = 69
+        socket_type     = dgram
+        wait            = yes
+        user            = nobody
+        server          = /usr/sbin/in.tftpd
+        server_args     = /tftpboot
+        disable         = no
+}
+
+mkdir /var/lib/tftp
+ln -s /var/lib/tftp /tftpboot
+systemctl reload xinetd
+
+root@avic2:/etc/xinetd.d# netstat -lpen | grep 69
+LISTEN      0          14566       1069/docker-proxy      udp        0      0 0.0.0.0:69              0.0.0.0:*   0          718348      12421/xinetd
