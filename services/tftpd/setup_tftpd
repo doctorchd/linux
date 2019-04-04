@@ -1,4 +1,4 @@
-apt install tftp tftpd
+apt install tftp tftp-server
 
 vi tftp
 
@@ -9,7 +9,7 @@ service tftp
         socket_type     = dgram
         wait            = yes
         user            = nobody
-        server          = /usr/sbin/in.tftpd
+        server          = -c -s -p -v /usr/sbin/in.tftpd
         server_args     = /tftpboot
         disable         = no
 }
