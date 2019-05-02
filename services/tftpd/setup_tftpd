@@ -1,6 +1,6 @@
-apt install tftp tftp-server
+apt install tftp tftp-hpa
 
-vi tftp
+vi /etc/xinetd.d/tftp
 
 service tftp
 {

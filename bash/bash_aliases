@@ -1,0 +1,16 @@
+alias   j=jobs
+alias   vi=vim
+alias   more=less
+
+alias   rm="rm -i"
+alias   cp="cp -i"
+alias   mv="mv -i"
+
+alias   s="screen"
+alias   scd="screen -d"
+alias   scr="screen -r"
+alias   sls="screen -ls"
+
+export EDITOR=vim
+export PAGER=less
+
