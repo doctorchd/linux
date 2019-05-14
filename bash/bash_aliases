@@ -10,6 +10,15 @@ alias   s="screen"
 alias   scd="screen -d"
 alias   scr="screen -r"
 alias   sls="screen -ls"
+alias   scw="screen -w"
+
+alias	g=git
+alias	gst="git status"
+alias	gbr="git branch"
+alias	gco="git checkout"
+
+alias   trr="traceroute"
+alias   srt="ssh -p16329 riot.dnipro.net"
 
 export EDITOR=vim
 export PAGER=less

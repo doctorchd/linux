@@ -1,0 +1,18 @@
+http://elrepo.org/tiki/tiki-index.php
+
+* Import the public key:
+
+rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+
+* To install ELRepo for RHEL-7, SL-7 or CentOS-7:
+
+yum install https://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
+
+* To install kernel-lt 4.x (long term support):
+
+yum --enablerepo=elrepo-kernel install kernel-lt
+
+* To install kernel-ml 5.x (main line)
+
+yum --enablerepo=elrepo-kernel install kernel-ml
+
