@@ -72,6 +72,7 @@ In GRUB menu choose “Advanced options for Ubuntu”
 Choose needed kernel
 
 To set old kernel to boot by default:
+https://unix.stackexchange.com/questions/198003/set-default-kernel-in-grub
 -------------------------------------
 
 root@avise7:~/work# cd /etc/default/
