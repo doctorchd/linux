@@ -71,3 +71,45 @@ In GRUB menu choose “Advanced options for Ubuntu”
 
 Choose needed kernel
 
+To set old kernel to boot by default:
+-------------------------------------
+
+root@avise7:~/work# cd /etc/default/
+
+root@avise7:/etc/default# cp grub grub.orig
+
+root@avise7:/etc/default# grep submenu /boot/grub/grub.cfg
+submenu 'Advanced options for Ubuntu' $menuentry_id_option 'gnulinux-advanced-1dff336e-ca90-48f6-9df9-9709a65b279f' {
+
+root@avise7:/etc/default#  grep gnulinux /boot/grub/grub.cfg
+menuentry 'Ubuntu' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-simple-1dff336e-ca90-48f6-9df9-9709a65b279f' {
+submenu 'Advanced options for Ubuntu' $menuentry_id_option 'gnulinux-advanced-1dff336e-ca90-48f6-9df9-9709a65b279f' {
+	menuentry 'Ubuntu, with Linux 4.4.0-131-generic' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-4.4.0-131-generic-advanced-1dff336e-ca90-48f6-9df9-9709a65b279f' {
+	menuentry 'Ubuntu, with Linux 4.4.0-131-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-4.4.0-131-generic-recovery-1dff336e-ca90-48f6-9df9-9709a65b279f' {
+	menuentry 'Ubuntu, with Linux 4.4.0-116-generic' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-4.4.0-116-generic-advanced-1dff336e-ca90-48f6-9df9-9709a65b279f' {
+	menuentry 'Ubuntu, with Linux 4.4.0-116-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-4.4.0-116-generic-recovery-1dff336e-ca90-48f6-9df9-9709a65b279f' {
+
+root@avise7-1:/etc/default# patch grub
+--- grub.orig	2019-05-14 03:19:57.296655292 -0700
++++ grub	2019-05-14 03:45:22.488374899 -0700
+@@ -3,7 +3,8 @@
+ # For full documentation of the options in this file, see:
+ #   info -f grub -n 'Simple configuration'
+
+-GRUB_DEFAULT=0
++#GRUB_DEFAULT=0
++GRUB_DEFAULT="gnulinux-advanced-1dff336e-ca90-48f6-9df9-9709a65b279f>gnulinux-4.4.0-116-generic-advanced-1dff336e-ca90-48f6-9df9-9709a65b279f"
+ #GRUB_HIDDEN_TIMEOUT=0
+ GRUB_HIDDEN_TIMEOUT_QUIET=true
+ GRUB_TIMEOUT=2
+
+root@avise7:/etc/default# update-grub
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-4.4.0-131-generic
+Found initrd image: /boot/initrd.img-4.4.0-131-generic
+Found linux image: /boot/vmlinuz-4.4.0-116-generic
+Found initrd image: /boot/initrd.img-4.4.0-116-generic
+done
+
+root@avise7:/etc/default# reboot
+
