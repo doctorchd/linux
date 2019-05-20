@@ -20,7 +20,6 @@ alias	gbr="git branch"
 alias	gco="git checkout"
 
 alias   trr="traceroute"
-alias   srt="ssh -p16329 riot.dnipro.net"
 
 export EDITOR=vim
 export PAGER=less
