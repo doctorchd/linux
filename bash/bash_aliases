@@ -2,6 +2,8 @@ alias   j=jobs
 alias   vi=vim
 alias   more=less
 
+alias   ll="ls -alF"
+
 alias   rm="rm -i"
 alias   cp="cp -i"
 alias   mv="mv -i"
