@@ -1,0 +1,95 @@
+https://www.2daygeek.com/linux-remove-delete-lines-in-file-sed-command/
+
+1) How to Delete First Line from a File?
+
+The below sed command removes the first line in sed-demo.txt file.
+# sed '1d' sed-demo.txt
+
+2) How to Delete Last Line from a File?
+
+The below sed command removes the last line in sed-demo.txt file.
+# sed '$d' sed-demo.txt
+
+3) How to Delete Particular Line from a File?
+
+The below sed command removes the third line in sed-demo.txt file.
+# sed '3d' sed-demo.txt
+
+4) How to Delete Range of Lines from a File?
+
+The below sed command removes the lines ranging from 5 to 7.
+# sed '5,7d' sed-demo.txt
+
+5) How to Delete Multiple Lines from a File?
+
+In this example, the following sed command removes 1st line, 5th line, 9th line, and last line.
+# sed '1d;5d;9d;$d' sed-demo.txt
+
+5a) How to Delete Lines Other Than the Specified Range from a File?
+
+Use the following sed command to remove all the lines from the file only except specified range.
+# sed '3,6!d' sed-demo.txt
+
+6) How to Delete Empty or Blank Lines from a File?
+
+The following sed command removes the empty or blank lines from sed-demo.txt file.
+# sed '/^$/d' sed-demo.txt
+
+7) How to Delete Lines That Contain a Pattern from a File?
+
+The following sed command removes the lines in sed-demo.txt file
+which match the System pattern.
+# sed '/System/d' sed-demo.txt
+
+8) How to Delete Lines That Containing One of Multiple Strings from a File?
+
+The following sed command removes the lines in sed-demo.txt file which match the System or Linux pattern.
+# sed '/System\|Linux/d' sed-demo.txt
+
+9) How to Delete Lines That Begin with Specified Character from a File?
+
+The following sed command removes all the lines that start with character R.
+# sed '/^R/d' sed-demo-1.txt
+
+The following sed command removes all the lines that start with character either R or F.
+# sed '/^[RF]/d' sed-demo-1.txt
+
+10) How to Delete Lines That End with Specified Character from a File?
+
+The following sed command removes all the lines that end with character m.
+# sed '/m$/d' sed-demo.txt
+
+The following sed command removes all the lines that end with character either x or m.
+# sed '/[xm]$/d' sed-demo.txt
+
+11) How to Delete All Lines That Start with Capital Letters
+
+Use the following sed command to remove all the lines that start with entirely in capital letters.
+# sed '/^[A-Z]/d' sed-demo-1.txt
+
+12) How to Delete a Matching Pattern Lines with Specified Range in a File?
+
+The below sed command removes the pattern Linux only if it is present in the lines from 1 to 6.
+# sed '1,6{/Linux/d;}' sed-demo.txt
+
+13) How to Delete Pattern Matching Line and also the Next Line?
+
+Use the following sed command to delete the line which containing the pattern ‘System’ and also the next line.
+# sed '/System/{N;d;}' sed-demo.txt
+
+14) How Delete lines that contains Digits from a File?
+
+The below sed command removes all the lines that contains digits.
+# sed '/[0-9]/d' sed-demo-1.txt
+
+The below sed command removes all the lines Begin with digits.
+# sed '/^[0-9]/d' sed-demo-1.txt
+
+The below sed command removes all the lines End with digits.
+# sed '/[0-9]$/d' sed-demo-1.txt
+
+15) How Delete lines that contains Alphabetic Characters from a File?
+
+The below sed command removes all the lines that contains alphabetic characters.
+# sed '/[A-Za-z]/d' sed-demo-1.txt
+
