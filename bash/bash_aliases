@@ -18,6 +18,10 @@ alias	g=git
 alias	gst="git status"
 alias	gbr="git branch"
 alias	gco="git checkout"
+alias   gsl="git stash list"
+alias   gfrbm="git fetch && git rebase origin/master"
+alias   gdm="git diff master"
+alias   gl1="git log -1"
 
 alias   trr="traceroute"
 
