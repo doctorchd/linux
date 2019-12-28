@@ -1,0 +1,13 @@
+https://askubuntu.com/questions/240803/convert-bootable-usb-to-iso-file
+
+To create an image from a drive
+sudo dd if=/dev/sdx of=/path/to/new.iso
+
+Alternatively, to create a USB drive from an image
+sudo dd if=/path/to/iso of=/dev/sdx
+
+Replace /dev/sdx with your USB drive, e.g. /dev/sdc.
+
+WARNING: It is imperative that you make certain you are using the correct drive. If you don't use the correct drive, you could lose your data. To check your currently mounted drives, use the command lsblk.
+
+Note: Copying large files (1 GB or higher) can take a long time, be patient.
