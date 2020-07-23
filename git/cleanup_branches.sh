@@ -16,7 +16,7 @@ fi
 
 git checkout master; git pull; git fetch
 
-for branch in `git branch | grep -v "^\*"`; do
+for branch in `git branch | grep -vE "^\*|^ *_"`; do
         git checkout $branch > /dev/null 2>&1
         git rebase origin/master > /dev/null
 
