@@ -1,0 +1,6 @@
+# generate sequence of udp packets
+nc -u 10.101.3.10 12345 < /dev/random
+
+# generate 1 udp packet
+dd if=/dev/random bs=1k count=1 | nc -u -w 1 10.101.3.10 12345
+
