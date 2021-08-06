@@ -2,12 +2,21 @@
 
 set -e
 
+source ~/.bashrc
+
+if !( git fetch > /dev/null 2>&1 )
+then
+    echo "server not reachable"
+    exit 2
+fi
+
 cur_branch=`git status -bs | sed "{s/^## //;s/\..*//;}"`
 cur_dir=`pwd`
 pushd $cur_dir
 
-cd $FWD_BASE_DIR
+cd `echo $FWD_BASE_DIR`
 status=`git status -s`
+echo $status
 
 if [ "XXX$status" != "XXX" ]; then
     echo "$status"; echo; echo "Cannot proceed"
