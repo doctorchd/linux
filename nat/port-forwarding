@@ -1,3 +1,4 @@
 https://serverfault.com/questions/140622/how-can-i-port-forward-with-iptables
 
-[root@ip-172-16-1-212 ec2-user]# iptables -t nat -A PREROUTING -p tcp -i eth0 --dport 4322 -j DNAT --to-destination 172.16.2.243:22
+iptables -t nat -A PREROUTING -p tcp -i eth0 --dport 4322 -j DNAT --to-destination 172.16.2.243:22
+iptables -t nat -A POSTROUTING -j MASQUERADE
