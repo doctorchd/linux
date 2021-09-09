@@ -27,6 +27,7 @@ alias   gl1="git log -1"
 alias   d="docker"
 
 alias   trr="traceroute"
+alias   p="ping"
 
 alias	sshp="ssh -o PasswordAuthentication=yes -o PubkeyAuthentication=no"
 alias	sshk="ssh -o PasswordAuthentication=no -o PubkeyAuthentication=yes"
