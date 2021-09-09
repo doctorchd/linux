@@ -28,6 +28,9 @@ alias   d="docker"
 
 alias   trr="traceroute"
 
+alias	sshp="ssh -o PasswordAuthentication=yes -o PubkeyAuthentication=no"
+alias	sshk="ssh -o PasswordAuthentication=no -o PubkeyAuthentication=yes"
+
 export EDITOR=vim
 export PAGER=less
 
