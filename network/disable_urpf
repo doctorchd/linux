@@ -1,0 +1,23 @@
+https://unix.stackexchange.com/questions/268928/routing-problem-with-ip-forwarding-on-ubuntu-14-04-and-virtualbox
+
+# sysctl net.ipv4.conf.all.rp_filter
+net.ipv4.conf.all.rp_filter = 2
+
+# sysctl net.ipv4.conf.all.rp_filter=0
+net.ipv4.conf.all.rp_filter = 0
+
+# for var in `sysctl -a | sed -n "/\.rp_filter/ {s/ =.*$//;p;}"`; do sysctl ${var}=0; done
+net.ipv4.conf.all.rp_filter = 0
+net.ipv4.conf.default.rp_filter = 0
+net.ipv4.conf.docker0.rp_filter = 0
+net.ipv4.conf.ens160.rp_filter = 0
+net.ipv4.conf.ens192.rp_filter = 0
+net.ipv4.conf.ens192/10.rp_filter = 0
+net.ipv4.conf.ens192/11.rp_filter = 0
+net.ipv4.conf.lo.rp_filter = 0
+net.ipv4.conf.ovs-system.rp_filter = 0
+net.ipv4.conf.ovsbr0.rp_filter = 0
+net.ipv4.conf.tun10.rp_filter = 0
+net.ipv4.conf.tun11.rp_filter = 0
+net.ipv4.conf.vi0.rp_filter = 0
+
