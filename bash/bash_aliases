@@ -11,7 +11,7 @@ alias   mv="mv -i"
 alias   s="screen"
 alias   scd="screen -d"
 alias   scr="screen -r"
-alias   sls="screen -ls"
+alias   scl="screen -ls"
 alias   scw="screen -w"
 
 alias	g=git
