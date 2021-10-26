@@ -54,7 +54,7 @@ done
 
 git checkout $cur_branch
 cd $FWD_BASE_DIR
-if ! $return_to_master ; then
+if [ "$return_to_master" != "1" ]; then
     popd
 fi
 
