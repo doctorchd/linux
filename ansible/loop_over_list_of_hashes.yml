@@ -1,0 +1,20 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+#------------------------------------------------------------------------------
+# Clean VPC peerings
+#------------------------------------------------------------------------------
+  - name: delete VPC peerings
+    shell: >
+      gcloud compute networks peerings delete "{{ item.peering }}" \
+        --network="{{ item.network }}" \
+        --quiet
+    with_items:
+      - { peering: "peering-100-101", network: "VPC100" }
+      - { peering: "peering-100-102", network: "VPC100" }
+      - { peering: "peering-101-100", network: "VPC101" }
+      - { peering: "peering-102-100", network: "VPC102" }
+    ignore_errors: True
+...

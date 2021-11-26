@@ -1,0 +1,15 @@
+i- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+  #------------------------------------------------------------------------------
+  # Clean VPC peerings
+  #------------------------------------------------------------------------------
+  - name: delete peering-100-101
+    shell: >
+      gcloud compute networks peerings delete peering-100-101 \
+        --network=VPC100 \
+        --quiet
+    ignore_errors: True
+...

@@ -1,0 +1,19 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+...
+#----------------------------------------------------------------------------
+# Wait until vpn-gw-101 and vpn-gw-102 are ready
+#----------------------------------------------------------------------------
+    - name: Wait until vpn-gw-101 is ready
+      shell: >
+        gcloud compute vpn-gateways list \
+          --filter="region=us-central1 AND name=vpn-gw-101" \
+          --format=json
+      register: result
+      until: result.stdout != "[]"
+      retries: 10
+      delay: 5
+...
