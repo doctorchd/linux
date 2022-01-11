@@ -1,0 +1,12 @@
+- name: Delete NSPs
+  uri:
+    validate_certs: no
+    url: "{{ base_url }}/configs/security/v1/networksecuritypolicies/{{ item.meta.name }}"
+    method: DELETE
+    headers:
+      Content-Type: application/json
+      Cookie: "{{ cookie }}"
+    body_format: json
+    status_code: 200
+  loop: "{{ nsps.json['items'] | default([], true) }}"
+
