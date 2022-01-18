@@ -1,0 +1,13 @@
+# https://docs.ansible.com/ansible/2.4/playbooks_loops.html
+
+- name: add several users
+  user:
+    name: "{{ item }}"
+    state: present
+    groups: "wheel"
+  with_items:
+     - testuser1
+     - testuser2
+
+
+
