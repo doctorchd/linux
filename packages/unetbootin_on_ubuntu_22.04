@@ -1,0 +1,10 @@
+wget https://github.com/unetbootin/unetbootin/releases/download/702/unetbootin-linux64-702.bin
+sudo mv unetbootin-linux64-702.bin /usr/local/bin
+cd /usr/local/bin
+sudo chown 0:0 unetbootin-linux64-702.bin
+sudo chmod 755 unetbootin-linux64-702.bin
+sudo ln -s unetbootin-linux64-702.bin unetbootin
+sudo apt update
+sudo apt install p7zip-full mtools
+sudo unetbootin
+

@@ -1,0 +1,12 @@
+https://ruan2020.blogspot.com/2020/05/tcping-on-debian-and-ubuntu.html
+
+sudo apt install tcptraceroute
+sudo wget http://www.vdberg.org/~richard/tcpping -O /usr/bin/tcping
+chmod 755 /usr/bin/tcping
+
+chd@inspiron15:~$ tcping google.com 443
+seq 0: tcp response from mil02s06-in-f14.1e100.net (172.217.16.14) [open]  18.449 ms
+seq 1: tcp response from waw02s13-in-f14.1e100.net (172.217.16.14) [open]  17.576 ms
+seq 2: tcp response from waw02s13-in-f14.1e100.net (172.217.16.14) [open]  17.930 ms
+^C
+
