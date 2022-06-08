@@ -1,0 +1,13 @@
+# example 1
+
+if ($fromhost-ip=="10.10.242.2") then { action(type="omfile" file="/var/log/mikrotik.log") }
+
+# example 2
+
+uleset(name="Mikrotik") {
+        if ($fromhost-ip=="10.10.242.1") then { action(type="omfile" file="/var/log/mikrotik.log") }
+        if ($fromhost-ip=="10.10.242.2") then { action(type="omfile" file="/var/log/mikrotik.log") }
+}
+
+input(type="imudp" port="514" ruleset="Mikrotik")
+
