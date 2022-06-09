@@ -1,13 +1,33 @@
+cd /etc
+cp rsyslog.conf rsyslog.conf.orig
+vi rsyslog.conf
+
+ # provides UDP syslog reception
+-#module(load="imudp")
+-#input(type="imudp" port="514")
++module(load="imudp")
++input(type="imudp" port="514")
+ 
+ # provides TCP syslog reception
+-#module(load="imtcp")
+-#input(type="imtcp" port="514")
++module(load="imtcp")
++input(type="imtcp" port="514")
+
+cd rsyslog.d
+vi 10-remote.conf
+
 # example 1
 
 if ($fromhost-ip=="10.10.242.2") then { action(type="omfile" file="/var/log/mikrotik.log") }
 
 # example 2
+# https://access.redhat.com/discussions/3889841
 
-uleset(name="Mikrotik") {
-        if ($fromhost-ip=="10.10.242.1") then { action(type="omfile" file="/var/log/mikrotik.log") }
-        if ($fromhost-ip=="10.10.242.2") then { action(type="omfile" file="/var/log/mikrotik.log") }
-}
+template(name="DynFile" type="string" string="/var/log/remote/%$YEAR%-%$MONTH%-%$DAY%/%HOSTNAME%")
+ruleset(name="RemoteMachine"){ action(type="omfile" dynaFile="DynFile" dirCreateMode="0755") }
+input(type="imudp" port="514" ruleset="RemoteMachine")
 
-input(type="imudp" port="514" ruleset="Mikrotik")
-
+# restart rsyslog
+systemctl stop syslog.socket rsyslog.service
+systemctl start rsyslog
