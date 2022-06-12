@@ -1,0 +1,43 @@
+$ nmcli device show enp7s0
+GENERAL.DEVICE:                         enp7s0
+GENERAL.TYPE:                           ethernet
+GENERAL.HWADDR:                         E0:DB:55:D3:42:BC
+GENERAL.MTU:                            1500
+GENERAL.STATE:                          100 (connected)
+GENERAL.CONNECTION:                     Wired connection 1
+GENERAL.CON-PATH:                       /org/freedesktop/NetworkManager/ActiveConnection/11
+WIRED-PROPERTIES.CARRIER:               on
+IP4.ADDRESS[1]:                         10.222.242.56/24
+IP4.GATEWAY:                            10.222.242.1
+IP4.ROUTE[1]:                           dst = 10.222.242.0/24, nh = 0.0.0.0, mt = 100
+IP4.ROUTE[2]:                           dst = 0.0.0.0/0, nh = 10.222.242.1, mt = 100
+IP4.DNS[1]:                             10.222.0.2
+IP6.ADDRESS[1]:                         fe80::783f:6bc5:fb65:72d6/64
+IP6.GATEWAY:                            --
+IP6.ROUTE[1]:                           dst = fe80::/64, nh = ::, mt = 1024
+
+$ resolvectl status
+Global
+       Protocols: -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+resolv.conf mode: foreign
+
+Link 2 (enp7s0)
+    Current Scopes: DNS
+         Protocols: +DefaultRoute +LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+Current DNS Server: 10.222.0.2
+       DNS Servers: 10.222.0.2
+
+Link 3 (wlp8s0)
+    Current Scopes: DNS
+         Protocols: +DefaultRoute +LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+Current DNS Server: 10.222.0.2
+       DNS Servers: 10.222.0.2
+
+Link 4 (wlxf02f746ae174)
+Current Scopes: none
+     Protocols: -DefaultRoute +LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+
+Link 5 (docker0)
+Current Scopes: none
+     Protocols: -DefaultRoute +LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+
