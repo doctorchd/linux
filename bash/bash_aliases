@@ -25,6 +25,7 @@ alias   gdm="git diff master"
 alias   gl1="git log -1"
 
 alias   d="docker"
+alias   dc="docker-compose"
 alias   trr="traceroute"
 alias   p="ping"
 alias   u="uptime"
