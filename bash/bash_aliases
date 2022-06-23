@@ -30,6 +30,7 @@ alias   trr="traceroute"
 alias   p="ping"
 alias   u="uptime"
 alias   t="telnet"
+alias   td="tcpdump -nnn"
 
 alias	sshp="ssh -o PasswordAuthentication=yes -o PubkeyAuthentication=no"
 alias	sshk="ssh -o PasswordAuthentication=no -o PubkeyAuthentication=yes"
