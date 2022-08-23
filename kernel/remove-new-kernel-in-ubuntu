@@ -1,0 +1,29 @@
+# at boot:
+# * choose 'Advanced options for Ubuntu'
+# * boot from older generic kernel
+
+# check current kernel version
+root@vm1:/home/uadmin# uname -r
+5.15.0-40-generic
+
+# check installed kernel versions
+root@vm1:/home/uadmin# apt list --installed | grep linux-image-
+
+linux-image-5.15.0-40-generic/jammy-updates,now 5.15.0-40.43 amd64 [installed,automatic]
+linux-image-5.15.0-46-generic/jammy-updates,jammy-security,now 5.15.0-46.49 amd64 [installed,automatic]
+linux-image-generic/jammy-updates,jammy-security,now 5.15.0.46.46 amd64 [installed,automatic]
+
+# delete new kernel packages
+root@vm1:/home/uadmin# apt list --installed | grep 5.15.0-46
+
+linux-headers-5.15.0-46-generic/jammy-updates,jammy-security,now 5.15.0-46.49 amd64 [installed,automatic]
+linux-headers-5.15.0-46/jammy-updates,jammy-security,now 5.15.0-46.49 all [installed,automatic]
+linux-image-5.15.0-46-generic/jammy-updates,jammy-security,now 5.15.0-46.49 amd64 [installed,automatic]
+linux-modules-5.15.0-46-generic/jammy-updates,jammy-security,now 5.15.0-46.49 amd64 [installed,automatic]
+linux-modules-extra-5.15.0-46-generic/jammy-updates,jammy-security,now 5.15.0-46.49 amd64 [installed,automatic]
+
+root@vm1:/home/uadmin# apt purge linux-modules-extra-5.15.0-46-generic linux-modules-5.15.0-46-generic linux-image-5.15.0-46-generic linux-image-unsigned-5.15.0-46-generic linux-headers-5.15.0-46-generic linux-headers-5.15.0-46
+
+root@vm1:/home/uadmin# apt autoremove
+
+
