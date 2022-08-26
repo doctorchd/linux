@@ -34,6 +34,9 @@ alias   t="telnet"
 alias   td="tcpdump -nnn"
 alias   ap="arping"
 
+alias	alu="apt list --upgradable"
+alias	aup="apt update"
+alias	aug="apt upgrade"
 
 alias	sshp="ssh -o PasswordAuthentication=yes -o PubkeyAuthentication=no"
 alias	sshk="ssh -o PasswordAuthentication=no -o PubkeyAuthentication=yes"
