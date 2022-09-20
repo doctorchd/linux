@@ -1,0 +1,63 @@
+#
+# https://fedingo.com/how-to-build-deb-package-in-ubuntu-debian-linux/
+#
+
+cd Work/git/openvpn
+mkdir -p wc-nas-utils-1.0-0/usr/local/bin
+mkdir -p wc-nas-utils-1.0-0/usr/local/etc
+mkdir -p wc-nas-utils-1.0-0/DEBIAN
+mkdir -p wc-nas-utils-1.0-0/usr/local/share/wc
+
+cp access_server/wc_clients wc-nas-utils-1.0-0/usr/local/bin
+cp access_server/wc.conf wc-nas-utils-1.0-0/usr/local/etc
+cp access_server/requirements.txt wc-nas-utils-1.0-0/usr/local/share/wc
+
+vi wc-nas-utils-1.0-0/DEBIAN/control
+
+Package: wc-nas-utils
+Version: 1.0-1
+Section: wc/utils
+Priority: optional
+Architecture: amd64
+Depends: python3-pip
+Maintainer: Dmytro Cherkasov <doctorchd@gmail.com>
+Description: Utilities for WC NAS
+ -----------------------------------------------------------
+ Check /usr/local/etc/wc.conf for correct settings
+ -----------------------------------------------------------
+
+vi wc-nas-utils-1.0-0/DEBIAN/postinst
+
+
+
+
+dpkg-deb --build wc-nas-utils-1.0-0
+
+ll
+
+-rw-r--r--  1 chd chd 1544 вер 13 19:59 wc-nas-utils-1.0-0.deb
+
+dpkg --info wc-nas-utils-1.0-0.deb 
+
+ new Debian package, version 2.0.
+ size 1544 bytes: control archive=285 bytes.
+     360 bytes,    12 lines      control              
+ Package: wc-nas-utils
+ Version: 1.0-1
+ Section: wc/utils
+ Priority: optional
+ Architecture: amd64
+ Depends:
+ Maintainer: Dmytro Cherkasov <doctorchd@gmail.com>
+ Description: Utilities for WC NAS
+  -----------------------------------------------------------
+  Check /usr/local/etc/wc.conf for correct settings
+  -----------------------------------------------------------
+
+scp wc-nas-utils-1.0-0.deb nas-01:
+ssh nas-01
+sudo dpkg -i wc-nas-utils-1.0-0.deb
+dpkg -l | grep wc
+apt list --installed | grep wc
+
+
