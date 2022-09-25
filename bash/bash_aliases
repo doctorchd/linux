@@ -41,6 +41,8 @@ alias	aug="apt upgrade"
 alias	sshp="ssh -o PasswordAuthentication=yes -o PubkeyAuthentication=no"
 alias	sshk="ssh -o PasswordAuthentication=no -o PubkeyAuthentication=yes"
 
+alias timestamp="date '+%Y%m%d%H%M'"
+
 export EDITOR=vim
 export PAGER=less
 
