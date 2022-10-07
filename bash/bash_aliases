@@ -34,6 +34,7 @@ alias   u="uptime"
 alias   t="telnet"
 alias   td="tcpdump -nnn"
 alias   ap="arping"
+alias   ff='find . -type f'
 
 alias	alu="apt list --upgradable"
 alias	aup="apt update"
