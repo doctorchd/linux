@@ -37,6 +37,7 @@ alias   ap="arping"
 alias   ff='find . -type f'
 
 alias	alu="apt list --upgradable"
+alias   ali="apt list --installed"
 alias	aup="apt update"
 alias	aug="apt upgrade"
 
