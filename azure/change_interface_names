@@ -7,18 +7,38 @@ network:
 
 vi /etc/netplan/50-cloud-init.yaml
 
+----
 network:
     ethernets:
-	...
+        eth0:
+            dhcp4: true
+            dhcp4-overrides:
+                route-metric: 100
+            dhcp6: false
+            match:
+                driver: hv_netvsc
+                macaddress: 00:22:48:5c:30:4c
+            set-name: eth0
         eth1:
-		...
+            dhcp4: true
+            dhcp4-overrides:
+                route-metric: 200
+            dhcp6: false
+            match:
+                driver: hv_netvsc
                 macaddress: 00:22:48:5c:6c:cb
-		...
+            set-name: eth1
         eth2:
-		...
+            dhcp4: true
+            dhcp4-overrides:
+                route-metric: 300
+            dhcp6: false
+            match:
+                driver: hv_netvsc
                 macaddress: 00:22:48:5c:68:ca
-		...
+            set-name: eth2
     version: 2
+----
 
 netplan try
 netplan generate
