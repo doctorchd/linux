@@ -1,0 +1,28 @@
+https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-vm-multiple-virtual-network-interfaces-configuration
+
+vi /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+
+network:
+   config: disabled
+
+vi /etc/netplan/50-cloud-init.yaml
+
+network:
+    ethernets:
+	...
+        eth1:
+		...
+                macaddress: 00:22:48:5c:6c:cb
+		...
+        eth2:
+		...
+                macaddress: 00:22:48:5c:68:ca
+		...
+    version: 2
+
+netplan try
+netplan generate
+netplan apply
+
+reboot
+
