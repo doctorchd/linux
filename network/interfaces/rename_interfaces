@@ -1,0 +1,7 @@
+https://askubuntu.com/questions/689501/how-to-rename-network-interface-in-15-10
+
+/etc/udev/rules.d/10-rename-network.rules
+
+SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="00:22:48:5c:6c:cb", NAME="eth1"
+SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="00:22:48:5c:68:ca", NAME="eth2"
+
