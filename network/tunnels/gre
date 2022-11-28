@@ -1,0 +1,54 @@
+=====================
+Setup
+=====================
+---------------------
+Host A
+---------------------
+# modprobe ip_gre
+# lsmod | grep gre
+ip_gre                 28672  0
+gre                    16384  1 ip_gre
+# ip tunnel add gretun1 mode gre local 10.221.2.70 remote 10.221.2.68 ttl 255
+# ip link set gretun1 up
+# ip addr add 172.16.1.1/30 dev gretun1
+# ip add show gretun1
+459: gretun1@NONE: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1476 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/gre 10.221.2.70 peer 10.221.2.68
+    inet 172.16.1.1/30 scope global gretun1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::add:246/64 scope link 
+       valid_lft forever preferred_lft forever
+# ip tunnel show
+gre0: gre/ip remote any local any ttl inherit nopmtudisc
+gretun1: gre/ip remote 10.221.2.68 local 10.221.2.70 ttl 255
+
+---------------------
+Host B
+---------------------
+# ip tunnel add gretun1 mode gre local 10.221.2.68 remote 10.221.2.70 ttl 255
+# lsmod | grep gre
+ip_gre                 28672  0
+gre                    16384  1 ip_gre
+# ip link set gretun1 up
+# ip addr add 172.16.1.2/30 dev gretun1
+# ip addr show gretun1
+7: gretun1@NONE: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1476 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/gre 10.221.2.68 peer 10.221.2.70
+    inet 172.16.1.2/30 scope global gretun1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::add:244/64 scope link 
+       valid_lft forever preferred_lft forever
+# ip tunnel show
+gre0: gre/ip remote any local any ttl inherit nopmtudisc
+gretun1: gre/ip remote 10.221.2.70 local 10.221.2.68 ttl 255
+
+=====================
+Clearing
+=====================
+---------------------
+Host A, B
+---------------------
+# ip link set gretun1 down
+# ip tunnel del gretun1
+# rmmod ip_gre
+
