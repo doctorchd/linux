@@ -1,0 +1,22 @@
+==========
+Setup
+==========
+Host A
+----------
+# ip tunnel add ipiptun1 mode ipip remote 10.221.2.68 local 10.221.2.70
+# ip link set ipiptun1 up
+# ip addr add 172.16.1.1/30 dev ipiptun1
+----------
+Host B
+----------
+# ip tunnel add ipiptun1 mode ipip local 10.221.2.68 remote 10.221.2.70
+# ip link set ipiptun1 up
+# ip addr add 172.16.1.2/30 dev ipiptun1
+==========
+Clearing
+==========
+Host A, B
+----------
+# ip link set ipiptun1 down
+# ip tunnel del ipiptun1
+
