@@ -1,0 +1,94 @@
+[not verified]
+https://sysadmins.co.za/setup-a-site-to-site-ipsec-vpn-with-strongswan-on-ubuntu/
+====================
+Setup
+====================
+--------------------
+Host A
+--------------------
+# apt install strongswan
+# sysctl net.ipv4.ip_forward=1
+# sysctl net.ipv4.conf.all.accept_redirects=0
+# sysctl net.ipv4.conf.all.send_redirects=0
+# openssl rand -base64 32
+jir48BUdXT/lHkBO9bxgsdHIIK9Z6FvE3ljx6ZNUm/U=
+# vi /etc/ipsec.secrets 
+---
+# source        destination
+10.221.2.70     10.221.2.68 : PSK "jir48BUdXT/lHkBO9bxgsdHIIK9Z6FvE3ljx6ZNUm/U="
+---
+# vi /etc/ipsec.conf
+---
+config setup
+        charondebug="all"
+        strictcrlpolicy=no
+        uniqueids = yes
+
+conn ipsectun
+        authby=secret
+        #left=%defaultroute
+        leftid=10.221.2.70
+        leftsubnet=172.16.1.0/24
+        rightid=10.221.2.68
+        rightsubnet=172.16.2.0/24
+        ike=aes256-sha2_256-modp1024!
+        esp=aes256-sha2_256!
+        keyingtries=0
+        ikelifetime=1h
+        lifetime=8h
+        dpddelay=30
+        dpdtimeout=120
+        dpdaction=restart
+        auto=start
+---
+# ip addr add 172.16.1.1/24 dev lo
+# ip route add 172.16.2.0/24 via 10.221.2.68
+--------------------
+Host B
+--------------------
+# apt install strongswan
+# sysctl net.ipv4.ip_forward=1
+# sysctl net.ipv4.conf.all.accept_redirects=0
+# sysctl net.ipv4.conf.all.send_redirects=0
+# vi /etc/ipsec.secrets 
+---
+# source        destination
+10.221.2.68     10.221.2.70 : PSK "jir48BUdXT/lHkBO9bxgsdHIIK9Z6FvE3ljx6ZNUm/U="
+---
+# vi /etc/ipsec.conf
+---
+config setup
+        charondebug="all"
+        strictcrlpolicy=no
+        uniqueids = yes
+
+conn ipsectun
+        authby=secret
+        #left=%defaultroute
+        leftid=10.221.2.68
+        leftsubnet=172.16.2.0/24
+        rightid=10.221.2.70
+        rightsubnet=172.16.1.0/24
+        ike=aes256-sha2_256-modp1024!
+        esp=aes256-sha2_256!
+        keyingtries=0
+        ikelifetime=1h
+        lifetime=8h
+        dpddelay=30
+        dpdtimeout=120
+        dpdaction=restart
+        auto=start
+---
+# ip addr add 172.16.2.1/24 dev lo
+# ip route add 172.16.1.0/24 via 10.221.2.70
+====================
+Start IPSec
+====================
+--------------------
+Host A, B
+--------------------
+# ipsec restart
+Stopping strongSwan IPsec...
+Starting strongSwan 5.8.2 IPsec [starter]...
+
+

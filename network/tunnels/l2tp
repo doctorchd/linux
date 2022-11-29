@@ -1,0 +1,63 @@
+====================
+Setup
+====================
+--------------------
+Host A
+--------------------
+# uname -a
+Linux T100-2-R0-2 5.15.0-1023-azure #29~20.04.1-Ubuntu SMP Wed Oct 26 19:18:25 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+# ll /lib/modules/5.15.0-1023-azure/kernel/net/l2tp
+ls: cannot access '/lib/modules/5.15.0-1023-azure/kernel/net/l2tp': No such file or directory
+# apt install linux-modules-extra-azure
+# ll /lib/modules/5.15.0-1023-azure/kernel/net/l2tp                           total 304
+drwxr-xr-x  2 root root  4096 Nov 29 10:55 ./
+drwxr-xr-x 60 root root  4096 Nov 29 10:55 ../
+-rw-r--r--  1 root root 99953 Oct 26 21:57 l2tp_core.ko
+-rw-r--r--  1 root root 20201 Oct 26 21:57 l2tp_debugfs.ko
+-rw-r--r--  1 root root 20665 Oct 26 21:57 l2tp_eth.ko
+-rw-r--r--  1 root root 30505 Oct 26 21:57 l2tp_ip.ko
+-rw-r--r--  1 root root 33961 Oct 26 21:57 l2tp_ip6.ko
+-rw-r--r--  1 root root 35017 Oct 26 21:57 l2tp_netlink.ko
+-rw-r--r--  1 root root 45961 Oct 26 21:57 l2tp_ppp.ko
+# ip l2tp add tunnel tunnel_id 3000 peer_tunnel_id 4000 encap udp local 10.221.2.70 remote 10.221.2.68 udp_sport 5000 udp_dport 6000
+# ip l2tp add session tunnel_id 3000 session_id 1000 peer_session_id 2000
+# lsmod | grep l2tp
+l2tp_eth               16384  1
+l2tp_netlink           24576  1 l2tp_eth
+l2tp_core              53248  2 l2tp_eth,l2tp_netlink
+# ip a s l2tpeth0
+8: l2tpeth0: <BROADCAST,MULTICAST> mtu 1446 qdisc noop state DOWN group default qlen 1000
+    link/ether 36:ca:73:94:df:e3 brd ff:ff:ff:ff:ff:ff
+# ip link set l2tpeth0 up mtu 1488
+# ip addr add 172.16.1.1 peer 172.16.1.2 dev l2tpeth0
+
+--------------------
+Host B
+--------------------
+# apt install linux-modules-extra-azure
+# ip l2tp add tunnel tunnel_id 4000 peer_tunnel_id 3000 encap udp local 10.221.2.68 remote 10.221.2.70 udp_sport 6000 udp_dport 5000
+# ip l2tp add session tunnel_id 4000 session_id 2000 peer_session_id 1000
+# lsmod | grep l2tp
+l2tp_eth               16384  1
+l2tp_netlink           24576  1 l2tp_eth
+l2tp_core              53248  2 l2tp_eth,l2tp_netlink
+# ip link set l2tpeth0 up mtu 1488
+# ip addr add 172.16.1.2 peer 172.16.1.1 dev l2tpeth0
+
+====================
+Test
+====================
+# ping 172.16.1.1
+PING 172.16.1.1 (172.16.1.1) 56(84) bytes of data.
+64 bytes from 172.16.1.1: icmp_seq=1 ttl=64 time=1.06 ms
+64 bytes from 172.16.1.1: icmp_seq=2 ttl=64 time=0.655 ms
+
+# td -i eth2 udp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on eth2, link-type EN10MB (Ethernet), capture size 262144 bytes
+11:44:36.180238 IP 10.221.2.68.6000 > 10.221.2.70.5000: UDP, length 110
+11:44:36.180288 IP 10.221.2.70.5000 > 10.221.2.68.6000: UDP, length 110
+11:44:37.204261 IP 10.221.2.68.6000 > 10.221.2.70.5000: UDP, length 110
+11:44:37.204318 IP 10.221.2.70.5000 > 10.221.2.68.6000: UDP, length 110
+
+
