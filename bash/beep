@@ -1,0 +1,11 @@
+vi /etc/modprobe.d/blacklist.conf
+...
+# ugly and loud noise, getting on everyone's nerves; this should be done by a
+# nice pulseaudio bing (Ubuntu: #77010)
+#blacklist pcspkr
+...
+
+modprobe pcspkr
+
+beep -f 500 -n -f 400 -l 100
+
