@@ -9,3 +9,5 @@ modprobe pcspkr
 
 beep -f 500 -n -f 400 -l 100
 
+alias check_inet="while true; do fping -q -c 1 1.1.1.1 || beep -f 500 -n -f 400 -l 100; sleep 1; done"
+
