@@ -1,0 +1,25 @@
+# create
+ip link add name loop1 type dummy
+ip link set loop1 up
+ip a a 10.221.254.101/32 dev loop1
+
+# remove
+ip link set loop1 down
+ip link delete loop1 type dummy
+
+# alternative: use bridge interfaces
+
+cat /etc/netplan/70-loopback.yaml 
+
+network:
+  bridges:
+    loop1:
+      dhcp4: false
+      dhcp6: false
+      addresses: [10.221.254.101/32]
+    loop2:
+      dhcp4: false
+      dhcp6: false
+      addresses: [10.194.254.100/32]
+  version: 2
+
