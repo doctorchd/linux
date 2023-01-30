@@ -6,3 +6,5 @@ servefile --help
 
 servefile -p 8000 --ssl -a viewer:qqq111 -l .
 
+https://viewer:qqq111@10.10.242.55
+
