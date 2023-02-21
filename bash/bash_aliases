@@ -27,7 +27,7 @@ alias   gl1="git log -1"
 
 alias   d="docker"
 alias   dc="docker-compose"
-alias   trr="traceroute"
+alias   trr="traceroute -n"
 alias   p="ping"
 alias   f="fping -l"
 alias   u="uptime"
