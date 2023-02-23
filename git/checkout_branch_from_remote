@@ -1,0 +1,49 @@
+$ gst
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+
+$ gbr
+* main
+
+$ g fetch
+Warning: Permanently added the RSA host key for IP address '40.74.28.31' to the list of known hosts.
+
+$ gbr
+* main
+
+$ gbr -v -a
+* main                              a9820e0 Merged PR 4: FIX: common.yaml: T100.3-R0.1_TOPAZ black IPs
+  remotes/origin/210-config         f2df830 ansible structure add
+  remotes/origin/HEAD               -> origin/main
+  remotes/origin/main               a9820e0 Merged PR 4: FIX: common.yaml: T100.3-R0.1_TOPAZ black IPs
+  remotes/origin/monitoring         54ba6f5 ansible galaxy collection added
+  remotes/origin/nas_setup          e51657f set FQDN as hostnames for t100_ss0 and t107_gs0
+  remotes/origin/nas_utils          efc3ff8 nas-utils-2.0.1-2
+  remotes/origin/oam_utils          e5aa040 oam-utils 1.0.2-0
+  remotes/origin/t100_fix           db5a67f FIX: common.yaml: T100.3-R0.1_TOPAZ black IPs FIX: t100-r01-routing.j2: Gi3 Local Grey OSPF Non-Broadcast
+  remotes/origin/wc-nas-utils-1.4.2 bdde867 wc-nas-utils-1.4.2-3
+
+$ g switch nas_setup
+Branch 'nas_setup' set up to track remote branch 'nas_setup' from 'origin'.
+Switched to a new branch 'nas_setup'
+
+$ gst
+On branch nas_setup
+Your branch is up to date with 'origin/nas_setup'.
+
+nothing to commit, working tree clean
+
+$ g log --oneline
+e51657f (HEAD -> nas_setup, origin/nas_setup) set FQDN as hostnames for t100_ss0 and t107_gs0
+d6f07ac updates
+fccafb7 add backup of all nases and oam
+871498d provision T107
+d839523 update nas-utils to 2.0.0-0
+324a8ef fix
+ebe1dac fix
+641aa83 add inventory for oam
+
+
+
