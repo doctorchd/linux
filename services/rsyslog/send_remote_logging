@@ -1,0 +1,9 @@
+# vi /etc/rsyslog.d/70-remote-logging.conf
+
+local1.* {
+        action(type="omfile" file="/var/log/radius.log")
+        action(type="omfwd" target="10.194.7.68" port="514" protocol="udp")
+}
+
+# systemctl restart rsyslog
+
