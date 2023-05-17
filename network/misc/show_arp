@@ -1,0 +1,4 @@
+#!/bin/bash
+
+arp -an | grep -vi inco | sort -n
+

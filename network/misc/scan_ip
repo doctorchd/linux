@@ -1,0 +1,4 @@
+#!/bin/bash
+
+2>&1 fping -r 0 -t 50 -g $1 | grep -vi unrea
+
