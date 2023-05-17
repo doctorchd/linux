@@ -1,0 +1,89 @@
+# https://openvpn.net/openvpn-client-for-linux/
+# https://community.openvpn.net/openvpn/wiki/OpenVPN3Linux
+
+# install
+
+apt install apt-transport-https
+curl -fsSL https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/openvpn-repo-pkg-keyring.gpg
+curl -fsSL https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-$DISTRO.list > /etc/apt/sources.list.d/openvpn3.list
+apt update
+apt install openvpn3
+
+# one-shot connection
+
+$ openvpn3 session-start --config work/Main/Works/Warcloud/a230517000/profile.ovpn
+Using configuration profile from file: work/Main/Works/Warcloud/a230517000/profile.ovpn
+Session path: /net/openvpn/v3/sessions/9dc669d4sb8abs49c8s9d84s6e132cc51f19
+Auth User name: a230517000
+Auth Password: 
+Connected
+
+$ ip a s tun0
+6: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 500
+    link/none 
+    inet 10.193.16.2/20 brd 10.193.31.255 scope global tun0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::c21e:7fe:55f3:a0c2/64 scope link stable-privacy 
+       valid_lft forever preferred_lft forever
+
+$ p 10.194.7.67
+PING 10.194.7.67 (10.194.7.67) 56(84) bytes of data.
+64 bytes from 10.194.7.67: icmp_seq=1 ttl=62 time=9.18 ms
+64 bytes from 10.194.7.67: icmp_seq=2 ttl=62 time=9.03 ms
+^C
+
+# list sessions
+
+$ openvpn3 sessions-list
+-----------------------------------------------------------------------------
+        Path: /net/openvpn/v3/sessions/9dc669d4sb8abs49c8s9d84s6e132cc51f19
+     Created: Wed May 17 14:37:52 2023                  PID: 480240
+       Owner: chd                                    Device: tun0
+ Config name: work/Main/Works/Warcloud/a230517000/profile.ovpn  (Config not available)
+Session name: gsg0.sq.mil.gov.ua
+      Status: Connection, Client connected
+-----------------------------------------------------------------------------
+
+# disconnect session
+
+$ openvpn3 session-manage -o /net/openvpn/v3/sessions/9dc669d4sb8abs49c8s9d84s6e132cc51f19 -D
+Initiated session shutdown.
+
+Connection statistics:
+     BYTES_IN................10032038
+     BYTES_OUT................3405526
+     PACKETS_IN..................8610
+     PACKETS_OUT................27152
+     TUN_BYTES_IN.............2751079
+     TUN_BYTES_OUT............9822135
+     TUN_PACKETS_IN.............27142
+     TUN_PACKETS_OUT.............8586
+
+# import config
+
+$ openvpn3 config-import -c /home/chd/work/Main/Works/Warcloud/a230517000/profile.ovpn -n sqadmin
+Configuration imported.  Configuration path: /net/openvpn/v3/configuration/7b898286x653ex48bbx9aa7x635a69b92573
+
+$ openvpn3 configs-list
+Configuration path
+Imported                        Last used                 Used
+Name                                                      Owner
+------------------------------------------------------------------------------
+/net/openvpn/v3/configuration/7b898286x653ex48bbx9aa7x635a69b92573
+Wed May 17 15:10:20 2023                                  0
+sqadmin                                                   chd
+------------------------------------------------------------------------------
+
+$ openvpn3 session-start -c sqadmin
+Using pre-loaded configuration profile 'sqadmin'
+Session path: /net/openvpn/v3/sessions/b42d1ac4s10e6s45dcs8022saa9baff7e15e
+Auth User name: a230517000
+Auth Password: 
+Connected
+
+
+
+# help
+
+openvpn3 -h
+
