@@ -1,0 +1,42 @@
+# method 1
+
+$ git remote -v
+origin	git@ssh.dev.azure.com:v3/WarCloud2/ConfigurationManagement/ConfigurationManagement (fetch)
+origin	git@ssh.dev.azure.com:v3/WarCloud2/ConfigurationManagement/ConfigurationManagement (push)
+
+
+# method 2
+
+$ git remote show origin
+* remote origin
+  Fetch URL: git@ssh.dev.azure.com:v3/WarCloud2/ConfigurationManagement/ConfigurationManagement
+  Push  URL: git@ssh.dev.azure.com:v3/WarCloud2/ConfigurationManagement/ConfigurationManagement
+  HEAD branch: main
+  Remote branches:
+    210-config                             tracked
+    main                                   tracked
+    monitoring                             tracked
+    nas_setup                              tracked
+    nas_utils                              tracked
+    ns_setup                               tracked
+    oam_utils                              tracked
+    refs/remotes/origin/ansible-collection stale (use 'git remote prune' to remove)
+    refs/remotes/origin/dns_setup          stale (use 'git remote prune' to remove)
+    t100_fix                               tracked
+    t110_azprv                             tracked
+    wc-nas-utils-1.4.2                     tracked
+  Local branches configured for 'git pull':
+    ansible-collection merges with remote ansible-collection
+    dns_setup          merges with remote dns_setup
+    main               merges with remote main
+    nas_setup          merges with remote nas_setup
+    nas_utils          merges with remote nas_utils
+    oam_utils          merges with remote oam_utils
+  Local refs configured for 'git push':
+    main      pushes to main      (up to date)
+    nas_setup pushes to nas_setup (fast-forwardable)
+    nas_utils pushes to nas_utils (up to date)
+    oam_utils pushes to oam_utils (up to date)
+
+$ git switch dns_setup
+
