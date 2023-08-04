@@ -1,20 +1,36 @@
+alias   d='LC_ALL=C date "+%c"'
+alias   f="fping -l"
+alias	g=git
 alias   j=jobs
-alias   vi=vim
-alias   more=less
+alias   m='mount'
+alias   p="ping"
+alias   s="screen"
+alias   t="telnet"
+alias   u="uptime"
 
-alias   ll="ls -alF"
 
 alias   rm="rm -i"
 alias   cp="cp -i"
 alias   mv="mv -i"
 
-alias   s="screen"
+alias   ap="arping"
+alias   ff='find . -type f'
+alias   ll="ls -alF"
+alias   vi=vim
+alias   td="sudo tcpdump -nnn"
+
+alias	alu="apt list --upgradable"
+alias   ali="apt list --installed"
+alias	aup="apt update"
+alias	aug="apt upgrade"
+
 alias   scd="screen -d"
 alias   scr="screen -r"
 alias   scl="screen -ls"
 alias   scw="screen -w"
 
-alias	g=git
+alias   trr="traceroute -n"
+
 alias	gst="git status"
 alias	gbr="git branch"
 alias	gco="git checkout"
@@ -25,21 +41,7 @@ alias   gfrbm="git fetch && git rebase origin/master"
 alias   gdm="git diff master"
 alias   gl1="git log -1"
 
-alias   d="docker"
-alias   dc="docker-compose"
-alias   trr="traceroute -n"
-alias   p="ping"
-alias   f="fping -l"
-alias   u="uptime"
-alias   t="telnet"
-alias   td="tcpdump -nnn"
-alias   ap="arping"
-alias   ff='find . -type f'
-
-alias	alu="apt list --upgradable"
-alias   ali="apt list --installed"
-alias	aup="apt update"
-alias	aug="apt upgrade"
+alias   more=less
 
 alias	sshp="ssh -o PasswordAuthentication=yes -o PubkeyAuthentication=no"
 alias	sshk="ssh -o PasswordAuthentication=no -o PubkeyAuthentication=yes"
