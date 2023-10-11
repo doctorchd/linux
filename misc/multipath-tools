@@ -1,0 +1,23 @@
+# https://askubuntu.com/questions/1242731/ubuntu-20-04-multipath-configuration
+#
+# eliminate flood in syslog:
+#
+# Oct 11 15:05:36 T100-0-SS0 multipathd[708]: sda: add missing path
+# Oct 11 15:05:36 T100-0-SS0 multipathd[708]: sda: failed to get udev uid: Invalid argument
+# Oct 11 15:05:36 T100-0-SS0 multipathd[708]: sda: failed to get sysfs uid: Invalid argument
+# Oct 11 15:05:36 T100-0-SS0 multipathd[708]: sda: failed to get sgio uid: No such file or directory
+
+vi /etc/multipath.conf
+
+defaults {
+    user_friendly_names yes
+}
+
+blacklist {
+    device {
+        vendor "VMware"
+        product "Virtual disk"
+    }
+}
+
+systemctl restart multipath-tools
