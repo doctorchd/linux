@@ -1,0 +1,104 @@
+* Start vm
+
+root@vm0:~# parted /dev/sda print
+Model: ATA VBOX HARDDISK (scsi)
+Disk /dev/sda: 10.7GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start   End     Size    File system  Name  Flags
+ 1      1049kB  2097kB  1049kB                     bios_grub
+ 2      2097kB  1881MB  1879MB  ext4
+ 3      1881MB  10.7GB  8855MB
+
+* Stop vm0
+
+* Remove all snapshots for vm0
+
+* Enlarge vm0 HDD
+- File --> Tools --> Virtual Media Manager
+- Hard disks
+- UbuntuVM0.vdi
+- Set size 20GB
+- Apply
+
+* Start vm0
+
+* Fix partition table
+
+root@vm0:/home/uadmin# parted /dev/sda print
+Warning: Not all of the space available to /dev/sda appears to be used, you can fix the GPT to use all of the space (an extra 20971520 blocks) or continue with the current setting? 
+Fix/Ignore? F                                                             
+Model: ATA VBOX HARDDISK (scsi)
+Disk /dev/sda: 21.5GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start   End     Size    File system  Name  Flags
+ 1      1049kB  2097kB  1049kB                     bios_grub
+ 2      2097kB  1881MB  1879MB  ext4
+ 3      1881MB  10.7GB  8855MB
+
+
+* Resize partition
+
+root@vm0:/home/uadmin# cfdisk 
+
+- /dev/sda3 --> Resize
+- New size: 18.2G
+- Write --> yes
+- Quit
+
+root@vm0:/home/uadmin# parted /dev/sda print
+Model: ATA VBOX HARDDISK (scsi)
+Disk /dev/sda: 21.5GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start   End     Size    File system  Name  Flags
+ 1      1049kB  2097kB  1049kB                     bios_grub
+ 2      2097kB  1881MB  1879MB  ext4
+ 3      1881MB  21.5GB  19.6GB
+
+
+
+* Resize physical volume
+
+root@vm0:/home/uadmin# pvs
+  PV         VG        Fmt  Attr PSize  PFree
+  /dev/sda3  ubuntu-vg lvm2 a--  <8.25g    0 
+
+root@vm0:/home/uadmin# pvresize /dev/sda3
+  Physical volume "/dev/sda3" changed
+  1 physical volume(s) resized or updated / 0 physical volume(s) not resized
+
+root@vm0:/home/uadmin# pvs
+  PV         VG        Fmt  Attr PSize   PFree 
+  /dev/sda3  ubuntu-vg lvm2 a--  <18.25g 10.00g
+
+root@vm0:/home/uadmin# vgs
+  VG        #PV #LV #SN Attr   VSize   VFree 
+  ubuntu-vg   1   1   0 wz--n- <18.25g 10.00g
+
+root@vm0:/home/uadmin# lvs
+  LV        VG        Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  ubuntu-lv ubuntu-vg -wi-ao---- <8.25g
+
+
+* Resize logical volume
+
+root@vm0:/home/uadmin# lvextend ubuntu-vg/ubuntu-lv /dev/sda3 --resizefs
+  Size of logical volume ubuntu-vg/ubuntu-lv changed from <8.25 GiB (2111 extents) to <18.25 GiB (4671 extents).
+  Logical volume ubuntu-vg/ubuntu-lv successfully resized.
+resize2fs 1.46.5 (30-Dec-2021)
+Filesystem at /dev/mapper/ubuntu--vg-ubuntu--lv is mounted on /; on-line resizing required
+old_desc_blocks = 2, new_desc_blocks = 3
+The filesystem on /dev/mapper/ubuntu--vg-ubuntu--lv is now 4783104 (4k) blocks long.
+
+root@vm0:/home/uadmin# df -h /
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   18G  4.7G   13G  28% /
+
