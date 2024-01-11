@@ -33,6 +33,7 @@ alias   trr="traceroute -n"
 
 alias	gst="git status"
 alias	gbr="git branch"
+alias	grb="git rebase"
 alias	gco="git checkout"
 alias	gcom="git checkout master"
 alias   gs="git stash"
