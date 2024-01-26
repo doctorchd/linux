@@ -47,7 +47,12 @@ alias   more=less
 alias	sshp="ssh -o PasswordAuthentication=yes -o PubkeyAuthentication=no"
 alias	sshk="ssh -o PasswordAuthentication=no -o PubkeyAuthentication=yes"
 
-alias timestamp="date '+%Y%m%d%H%M'"
+alias   timestamp="date '+%Y%m%d%H%M'"
+
+alias   jc='journalctl'
+alias   jcf='journalctl -f'
+alias   jct='journalctl --since today'
+alias   jcy='journalctl --since yesterday'
 
 export EDITOR=vim
 export PAGER=less
