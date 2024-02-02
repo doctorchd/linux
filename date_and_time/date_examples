@@ -1,0 +1,14 @@
+# timestamp
+date '+%Y%m%d%H%M'
+
+# seconds from 1970-01-01
+date '+%s'
+
+# convert seconds from 1970-01-01 to date
+date --date='@1706861986'
+
+# misc
+date --date='next Fri'
+date --date='last month'
+date '+%s' --date='last month'
+date --date='Jan 01'
