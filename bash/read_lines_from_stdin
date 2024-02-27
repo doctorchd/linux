@@ -1,0 +1,6 @@
+# https://stackoverflow.com/questions/31218391/read-line-by-line-from-standard-input-bash
+
+while IFS=$'\n' read -r line; do
+  echo "user: -->$line<--"
+done
+
