@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while IFS=$'\n' read -r user; do
+
+  cmd="oam-batch rmuser -n 1 -t green -g green_ppo -u $user"
+  echo "$cmd"
+  $cmd &
+  while pgrep -P $$ > /dev/null; do sleep 1; done
+
+done
+
