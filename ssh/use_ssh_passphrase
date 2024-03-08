@@ -1,0 +1,18 @@
+# generate private key protected with passphrase
+ssh-keygen -N <passphrase> -f .ssh/<keyfile name>
+
+# check ssh-agent
+if (pgrep -a -u $(id -u) ssh-agent); then
+
+  echo 'ssh-agent already runs'
+
+else
+
+  # start ssh-agent
+  eval $(ssh-agent -s)
+
+  # load ssh key
+  ssh-add .ssh/<keyfile name>
+
+fi
+
