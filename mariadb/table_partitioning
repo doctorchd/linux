@@ -1,0 +1,68 @@
+# check table create definition
+CREATE TABLE `T115_0_GS0_sessions` (
+  `session_id` varchar(160) NOT NULL,
+  `node` varchar(128) NOT NULL,
+  `username` varchar(128) DEFAULT NULL,
+  `common_name` varchar(128) DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `duration` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `auth` int(11) DEFAULT NULL,
+  `real_ip` varchar(15) DEFAULT NULL,
+  `vpn_ip` varchar(15) DEFAULT NULL,
+  `proto` varchar(3) DEFAULT NULL,
+  `port` varchar(5) DEFAULT NULL,
+  `bytes_in` bigint(20) DEFAULT NULL,
+  `bytes_out` bigint(20) DEFAULT NULL,
+  `bytes_total` bigint(20) DEFAULT NULL,
+  `error` text DEFAULT NULL,
+  `extra` text DEFAULT NULL,
+  `timestamp` datetime DEFAULT NULL,
+  PRIMARY KEY (`session_id`,`node`)
+)
+
+# add start_time to primary key
+MariaDB [nas_control]> alter table T115_0_GS0_sessions drop primary key;
+MariaDB [nas_control]> alter table T115_0_GS0_sessions add primary key (session_id,node,start_time);
+
+# create partitioning
+MariaDB [nas_control]> alter table T115_0_GS0_sessions
+    partition by range (to_days(start_time)) (
+        partition p2024_01 values less than (to_days('2024-02-01')),
+        partition p2024_02 values less than (to_days('2024-03-01')),
+        partition p2024_03 values less than (to_days('2024-04-01')),
+        partition p2024_04 values less than (to_days('2024-05-01'))
+    );
+
+# check partitions
+MariaDB [nas_control]> show create table T115_0_GS0_sessions;
+MariaDB [nas_control]> show table status where name = 'T115_0_GS0_sessions';
+MariaDB [nas_control]> select TABLE_SCHEMA,TABLE_NAME,PARTITION_NAME,TABLE_ROWS from information_schema.PARTITIONS where table_schema = 'nas_control' and table_name = 'T115_0_GS0_sessions';
++--------------+---------------------+----------------+------------+
+| TABLE_SCHEMA | TABLE_NAME          | PARTITION_NAME | TABLE_ROWS |
++--------------+---------------------+----------------+------------+
+| nas_control  | T115_0_GS0_sessions | p2024_01       |      37733 |
+| nas_control  | T115_0_GS0_sessions | p2024_02       |     114460 |
+| nas_control  | T115_0_GS0_sessions | p2024_03       |     110677 |
+| nas_control  | T115_0_GS0_sessions | p2024_04       |          0 |
++--------------+---------------------+----------------+------------+
+
+# add partition
+MariaDB [nas_control]> alter table T115_0_GS0_sessions add partition ( partition p2024_05 values less than (to_days('2024-06-01')) );
+
+# use some particular partition
+MariaDB [nas_control]> select count(*) from T115_0_GS0_sessions partition (p2024_03);
++----------+
+| count(*) |
++----------+
+|   111671 |
++----------+
+
+# remove partitioning
+MariaDB [nas_control]> alter table T115_0_GS0_sessions remove partitioning;
+MariaDB [nas_control]> select TABLE_SCHEMA,TABLE_NAME,PARTITION_NAME,TABLE_ROWS from information_schema.PARTITIONS where table_schema = 'nas_control' and table_name = 'T115_0_GS0_sessions';
++--------------+---------------------+----------------+------------+
+| TABLE_SCHEMA | TABLE_NAME          | PARTITION_NAME | TABLE_ROWS |
++--------------+---------------------+----------------+------------+
+| nas_control  | T115_0_GS0_sessions | NULL           |     170660 |
++--------------+---------------------+----------------+------------+
