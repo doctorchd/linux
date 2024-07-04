@@ -31,16 +31,19 @@ alias   scw="screen -w"
 
 alias   trr="traceroute -n"
 
-alias	gst="git status"
+alias	g="git"
 alias	gbr="git branch"
-alias	grb="git rebase"
 alias	gco="git checkout"
 alias	gcom="git checkout master"
+alias   gdm="git diff master"
+alias	gf="git fetch"
+alias   gfrbm="git fetch && git rebase origin/master"
+alias   gl1="git log -1"
+alias	gp="git pull"
+alias	grb="git rebase"
 alias   gs="git stash"
 alias   gsl="git stash list"
-alias   gfrbm="git fetch && git rebase origin/master"
-alias   gdm="git diff master"
-alias   gl1="git log -1"
+alias	gst="git status"
 
 alias   more=less
 

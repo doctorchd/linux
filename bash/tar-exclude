@@ -1,0 +1,1 @@
+tar --exclude '/boot' --exclude '/proc' --exclude='/sys' --exclude='/dev' --exclude='/run' -czvf riot.tgz /
