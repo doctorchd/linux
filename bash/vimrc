@@ -1,4 +1,4 @@
-set textwidth=64
+#set textwidth=64
 set expandtab
 set tabstop=4
 syntax enable
