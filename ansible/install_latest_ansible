@@ -1,0 +1,41 @@
+$ apt policy ansible
+ansible:
+  Installed: 2.10.7+merged+base+2.10.8+dfsg-1ubuntu0.1~esm4
+  Candidate: 2.10.7+merged+base+2.10.8+dfsg-1ubuntu0.1~esm4
+...
+
+$ sudo apt update
+$ sudo apt install pipx
+$ pipx ensurepath
+
+# ensurepath          Ensure directories necessary for pipx operation are in your PATH environment variable.
+
+$ pipx install --include-deps ansible
+...
+  installed package ansible 10.2.0, installed using Python 3.10.13
+  These apps are now globally available
+    - ansible
+    - ansible-community
+    - ansible-config
+    - ansible-connection
+    - ansible-console
+    - ansible-doc
+    - ansible-galaxy
+    - ansible-inventory
+    - ansible-playbook
+    - ansible-pull
+    - ansible-test
+    - ansible-vault
+done! ✨ 🌟 ✨
+
+$ ansible --version
+ansible [core 2.17.2]
+  config file = /home/chd/.ansible.cfg
+  configured module search path = ['/home/chd/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /home/chd/.local/pipx/venvs/ansible/lib/python3.10/site-packages/ansible
+  ansible collection location = /home/chd/.ansible/collections:/usr/share/ansible/collections
+  executable location = /home/chd/.local/bin/ansible
+  python version = 3.10.13 (main, Sep  5 2023, 06:03:44) [GCC 11.4.0] (/home/chd/.local/pipx/venvs/ansible/bin/python)
+  jinja version = 3.1.4
+  libyaml = True
+
