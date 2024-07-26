@@ -39,3 +39,6 @@ ansible [core 2.17.2]
   jinja version = 3.1.4
   libyaml = True
 
+$ pipx upgrade --include-injected ansible
+ansible is already at latest version 10.2.0 (location: /home/chd/.local/pipx/venvs/ansible)
+
