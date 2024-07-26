@@ -1,3 +1,5 @@
+https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#selecting-an-ansible-package-and-version-to-install
+
 $ apt policy ansible
 ansible:
   Installed: 2.10.7+merged+base+2.10.8+dfsg-1ubuntu0.1~esm4
