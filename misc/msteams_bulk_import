@@ -1,0 +1,54 @@
+https://m365scripts.com/microsoft-teams/how-to-add-bulk-users-to-teams-in-microsoft-teams/
+
+$ head emails 
+UPN
+v.avramenko@ukma.edu.ua
+i.antypenko@ukma.edu.ua
+a.afonina@ukma.edu.ua
+i.bahriantsev@ukma.edu.ua
+m.bryk@ukma.edu.ua
+s.bublyk@ukma.edu.ua
+da.bulavina@ukma.edu.ua
+m.verstiuk@ukma.edu.ua
+p.vladymyrska@ukma.edu.ua
+
+$pwsh
+
+PS /home/chd> Install-Module -Name MicrosoftTeams
+
+PS /home/chd> Import-Module –Name MicrosoftTeams
+
+PS /home/chd> Connect-MicrosoftTeams
+Opening in existing browser session.
+
+Account                 Environment Tenant                               TenantId
+-------                 ----------- ------                               --------
+d.cherkasov@ukma.edu.ua AzureCloud  b8cbfe43-c90c-4bea-84ae-be5d6d8a5f52 b8cbfe43-c90c-4bea-84ae-be5d6d8a5f52
+
+PS /home/chd> Get-Team -DisplayName "Побудова і використання комунікаційних мереж"
+                                                                                                                        
+GroupId                              DisplayName        Visibility  Archived  MailNickName       Description            
+-------                              -----------        ----------  --------  ------------       -----------            
+fc8fa45f-6fba-40f7-ab8a-55d2e5870e68 Побудова і викори… Public      False     msteams_531ff0     Курс базується на…     
+                                                                                                                        
+PS /home/chd> Import-CSV './work/NaUKMA/Побудова і використання комунікаційних мереж/emails' | foreach {
+>> $UPN=$_.UPN
+>> Write-Progress -Activity "Adding $UPN to teams..."
+>> Add-TeamUser –GroupId fc8fa45f-6fba-40f7-ab8a-55d2e5870e68 -User $UPN
+>> If($?)
+>> {
+>> Write-Host $UPN Successfully added -ForegroundColor Green
+>> }
+>> Else
+>> {
+>> Write-Host $UPN - Error occurred –ForegroundColor Red
+>> }
+>> }
+v.avramenko@ukma.edu.ua Successfully added                                                                              
+i.antypenko@ukma.edu.ua Successfully added                                                                              
+a.afonina@ukma.edu.ua Successfully added                                                                                
+i.bahriantsev@ukma.edu.ua Successfully added                                                                            
+...
+
+PS /home/chd> exit                                                                                                      
+

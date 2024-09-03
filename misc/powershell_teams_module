@@ -1,0 +1,27 @@
+https://m365scripts.com/microsoft365/how-to-connect-to-microsoft-teams-using-powershell/
+
+$ pwsh
+
+PowerShell 7.4.5
+
+PS /home/chd> Install-Module -Name MicrosoftTeams
+WARNING: Could not find a part of the path '/home/chd/.cache/powershell/PowerShellGet/PSRepositories.xml'.
+
+Untrusted repository
+You are installing the modules from an untrusted repository. If you trust this repository, change its InstallationPolicy value by running the Set-PSRepository cmdlet. Are you sure you want 
+to install the modules from 'PSGallery'?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): A
+
+PS /home/chd> Import-Module –Name MicrosoftTeams
+
+PS /home/chd> Connect-MicrosoftTeams
+Opening in existing browser session.
+
+Account                 Environment Tenant                               TenantId
+-------                 ----------- ------                               --------
+d.cherkasov@ukma.edu.ua AzureCloud  b8cbfe43-c90c-4bea-84ae-be5d6d8a5f52 b8cbfe43-c90c-4bea-84ae-be5d6d8a5f52
+
+PS /home/chd> Get-Command –Module MicrosoftTeams 
+
+PS /home/chd> Disconnect-MicrosoftTeams 
+
