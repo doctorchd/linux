@@ -1,0 +1,8 @@
+https://itsfoss.com/change-sudo-password-timeout-ubuntu/
+
+sudo visudo
+
+...
+Defaults        env_reset, timestamp_timeout=3
+...
+
