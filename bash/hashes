@@ -1,0 +1,24 @@
+#!/bin/bash
+
+declare -A sites
+
+sites=( ["asiapg"]="10.219.0.50" ["frpg"]="10.207.72.50" ["gibpg"]="10.207.80.50" \
+        ["test"]="169.254.1.1" )
+
+function check_site() {
+
+    if (ping -c 4 -i 0.1 -W 0.1 "${sites[$site]}" > /dev/null); then
+        echo -n "."
+    else
+        echo
+        echo "$(date): fail $site"
+    fi
+
+}
+
+while true; do
+    for site in "${!sites[@]}"; do
+        check_site
+    done
+    sleep 5
+done
