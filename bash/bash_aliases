@@ -51,6 +51,7 @@ alias	sshp="ssh -o PasswordAuthentication=yes -o PubkeyAuthentication=no"
 alias	sshk="ssh -o PasswordAuthentication=no -o PubkeyAuthentication=yes"
 
 alias   timestamp="date '+%Y%m%d%H%M'"
+alias   strip_colors='sed -r "s/\x1B\[[0-9;]*[mK]//g"'
 
 alias   jc='journalctl'
 alias   jcf='journalctl -f'
