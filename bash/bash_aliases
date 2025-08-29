@@ -1,4 +1,4 @@
-# bash aliases
+# super bash aliases
 alias   d='LC_ALL=C date "+%c"'
 alias   f="fping -l"
 alias	g=git
