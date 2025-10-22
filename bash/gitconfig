@@ -1,0 +1,19 @@
+[alias]
+	st = status
+	lg = log --oneline
+	co = checkout
+	br = branch
+	cm = commit
+    rb = rebase
+    sm = submodule
+    sms = submodule status
+    smi = submodule init
+    smu = submodule update
+[user]
+	email = dmytro.cherkasov@playtech.com
+	name = Dmytro Cherkasov
+[core]
+	autocrlf = true
+[http]
+	sslCAinfo = /etc/ssl/certs/ca-certificates.crt
+	sslVerify = false
