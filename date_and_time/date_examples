@@ -3,6 +3,7 @@ date '+%Y%m%d%H%M'
 
 # seconds from 1970-01-01
 date '+%s'
+date -d "Jan 11 23:59:59 2026" +%s
 
 # convert seconds from 1970-01-01 to date
 date --date='@1706861986'
