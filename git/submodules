@@ -1,0 +1,9 @@
+# Update submodule
+git submodule status
+
+git submodule update --init --recursive
+
+git submodule update --init --force --remote host_vars/extmon.infra.gpas.io/brand_specific_domains
+
+git submodule status
+
