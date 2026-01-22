@@ -1,0 +1,5 @@
+nmap -p 443 --traceroute 94.190.155.138
+
+nmap -Pn --traceroute 94.190.155.138
+
+
